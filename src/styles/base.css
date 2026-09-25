@@ -1,0 +1,168 @@
+/*
+ * ============================================================================
+ * BASE STYLES: element defaults and the Shopify section layout grid
+ * ============================================================================
+ *
+ * Replaces the skeleton theme's assets/critical.css. Tailwind's preflight
+ * already provides the reset (box-sizing, margins, media elements, form font
+ * inheritance), so only theme-specific rules remain here.
+ *
+ * Everything is inside `@layer base` ON PURPOSE. Unlayered CSS always beats
+ * layered CSS regardless of specificity, so an unlayered `* { margin: 0 }`
+ * would silently override every `m-*` utility. Keep new global rules
+ * layered too. See docs/architecture.md → "CSS cascade layers".
+ *
+ * Colours come from semantic tokens only, so every rule here follows the
+ * section's scheme (see tokens.css). WCAG success criteria are noted as "SC".
+ * ============================================================================
+ */
+
+@layer base {
+  html {
+    background-color: var(--color-surface);
+    color: var(--color-fg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /*
+     * SC 2.4.11 Focus Not Obscured: anchors and keyboard focus scroll clear of
+     * a sticky header. The header sets --header-height when it becomes sticky.
+     */
+    scroll-padding-top: calc(var(--header-height, 0px) + 1rem);
+  }
+
+  /* Column layout keeps the footer at the bottom on short pages. */
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+  }
+
+  /* Lock page scroll while a modal drawer/dialog is open (skeleton convention). */
+  html:has(dialog[scroll-lock][open], details[scroll-lock][open]) {
+    overflow: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-normal);
+    text-wrap: balance;
+    overflow-wrap: break-word;
+  }
+
+  /*
+   * SC 1.4.10 Reflow: on phones, long words in big display type hyphenate
+   * instead of overflowing. Relies on <html lang>, which the layouts set.
+   */
+  @media (width < 40rem) {
+    :where(h1, h2, h3, .font-display) {
+      hyphens: auto;
+    }
+  }
+
+  p {
+    text-wrap: pretty;
+    overflow-wrap: break-word;
+  }
+
+  /* Rich-text fields from the Shopify admin often leave empty paragraphs. */
+  p:empty {
+    display: none;
+  }
+
+  /*
+   * SC 1.4.1 Use of Color: a link must never be marked by colour alone. Links
+   * without a class (rich text, `link_to`) are underlined. Components that
+   * style their own links add a class and take responsibility for this.
+   */
+  a:not([class]) {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  a:not([class]):hover {
+    text-decoration-thickness: 2px;
+  }
+
+  select,
+  dialog {
+    background-color: var(--color-surface-raised);
+    color: var(--color-fg);
+  }
+
+  /* Preflight's 50%-opacity placeholder fails SC 1.4.3. fg-muted passes on every scheme. */
+  ::placeholder {
+    color: var(--color-fg-muted);
+  }
+
+  ::selection {
+    background-color: var(--color-fg);
+    color: var(--color-surface);
+  }
+
+  /*
+   * SC 2.4.7 Focus Visible and SC 2.4.13 Focus Appearance (AAA): a 2px ring
+   * in the scheme's focus colour (≥ 3:1 on every surface). Not currentColor:
+   * on a filled button that would paint the ring in the label colour and
+   * make it vanish against the page. `outline` also survives Windows forced
+   * colours, where box-shadow is removed.
+   */
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+
+  /* SC 2.3.3 Animation from Interactions: honour the OS reduced-motion setting everywhere. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /*
+   * Section layout grid (from the skeleton theme).
+   *
+   * Every section is a 3-column grid: [gutter] [content] [gutter]. Direct
+   * children sit in the centre column by default, capped at
+   * --container-page. Add the `full-width` utility to a child to bleed
+   * edge-to-edge. `--content-grid` is also reused by sections that need the
+   * same columns on an inner element.
+   */
+  .shopify-section {
+    --content-width: min(
+      calc(var(--container-page) - var(--spacing-gutter) * 2),
+      calc(100% - var(--spacing-gutter) * 2)
+    );
+    --content-margin: minmax(var(--spacing-gutter), 1fr);
+    --content-grid: var(--content-margin) var(--content-width)
+      var(--content-margin);
+
+    /* Required so absolutely-positioned <img> elements can act as backgrounds. */
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--content-grid);
+    width: 100%;
+  }
+
+  .shopify-section > * {
+    grid-column: 2;
+  }
+}
+
+/* A utility (not base) so it reliably wins over `.shopify-section > *`. */
+@utility full-width {
+  grid-column: 1 / -1;
+}

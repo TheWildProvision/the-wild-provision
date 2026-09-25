@@ -1,0 +1,28 @@
+/*
+ * Stylesheet entry point, compiled by Vite + Tailwind to assets/theme.css.
+ * Imported from src/main.ts. Don't edit assets/theme.css directly.
+ */
+
+/*
+ * `source(none)` turns off Tailwind's automatic file detection, which would
+ * otherwise scan node_modules-adjacent folders and the generated
+ * assets/theme.* files. Instead we list exactly where class names can appear.
+ */
+@import "tailwindcss" source(none);
+
+@import "./tokens.css";
+@import "./base.css";
+
+/* Where Tailwind looks for class names (paths relative to this file). */
+@source "../../layout";
+@source "../../sections";
+@source "../../snippets";
+@source "../../blocks";
+@source "../../templates";
+@source "../"; /* src/: classes toggled from TypeScript */
+
+/*
+ * Tailwind can only see complete class names. Never build them dynamically
+ * in Liquid or TS (e.g. `text-{{ color }}`); map settings to full class
+ * names instead. See docs/architecture.md → "Using Tailwind in Liquid".
+ */

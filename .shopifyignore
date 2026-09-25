@@ -1,0 +1,14 @@
+# Files excluded from Shopify CLI operations (push, pull, dev).
+#
+# The CLI only syncs theme folders (assets, blocks, config, layout, locales,
+# sections, snippets, templates) PLUS root-level AGENTS.md and DESIGN.md, which
+# it treats as theme documentation. Everything else (src/, docs/, package.json,
+# etc.) is never uploaded, so it doesn't need listing here.
+#
+# Syntax examples:
+#   templates/product.json           a specific file
+#   templates/*.json                 a wildcard pattern
+#   /(templates|sections)/.*\.json/  a regular expression
+
+# Developer/agent instructions: not useful inside the store's theme files.
+AGENTS.md

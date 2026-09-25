@@ -1,0 +1,7 @@
+# Shopify JSON files (templates, locales, settings) may contain comments.
+*.json linguist-language=jsonc
+
+# Build output from `pnpm build`. Collapsed in GitHub diffs, excluded from stats.
+assets/theme.css linguist-generated=true
+assets/theme.js linguist-generated=true
+pnpm-lock.yaml linguist-generated=true

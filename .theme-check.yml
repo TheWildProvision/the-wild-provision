@@ -1,0 +1,3 @@
+# Theme Check (Liquid linter), run via `pnpm theme:check` or the VS Code extension.
+# Rule reference: https://shopify.dev/docs/storefronts/themes/tools/theme-check/checks
+extends: theme-check:recommended

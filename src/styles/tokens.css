@@ -1,0 +1,311 @@
+/*
+ * ============================================================================
+ * DESIGN TOKENS: The Wild Provision
+ * ============================================================================
+ *
+ * The single source of truth for colour, type, spacing, shape, elevation and
+ * motion. Rationale, usage rules and WCAG notes live in
+ * docs/DESIGN_SYSTEM.md. Change both together, then run `pnpm check:contrast`
+ * (part of `pnpm check`) to re-verify every colour pairing.
+ *
+ * How this file works (Tailwind CSS v4):
+ *   - Every `--<namespace>-<name>` variable in @theme becomes BOTH a utility
+ *     class and a CSS variable, e.g. `--color-fg` → `text-fg`, `bg-fg`,
+ *     `border-fg` … and `var(--color-fg)`.
+ *   - `static` forces every token onto :root even if no utility uses it, so
+ *     Liquid `{% stylesheet %}` blocks and inline `style=""` attributes can
+ *     always rely on `var(--token)`.
+ *   - `--<namespace>-*: initial` wipes Tailwind's defaults for that namespace,
+ *     so only brand-approved values exist (no stray `bg-blue-500`).
+ *
+ * Colour works in three layers:
+ *   1. Palette (`--palette-*`): raw colours. Not in a Tailwind namespace, so
+ *      they never become utilities.
+ *   2. Semantic colours (`--color-*`): the only colour utilities. Components
+ *      use these (`bg-surface`, `text-fg-muted`, `border-control` …).
+ *   3. Schemes (`.scheme-paper`, `.scheme-linen`, `.scheme-moss`, at the end
+ *      of this file): remap the semantic colours for a section, so a
+ *      component written once is correct and compliant on every scheme.
+ *
+ * Version: 1.0.0 (2026-09-25).
+ * ============================================================================
+ */
+
+@theme static {
+  /* --------------------------------------------------------------------------
+   * Palette: olive-tinted neutrals from paper to moss. There is no accent
+   * colour. Reference these only from the semantic colours and schemes below,
+   * never from components.
+   * ------------------------------------------------------------------------ */
+  --palette-bone: #faf8f5; /* Raised surfaces on light schemes */
+  --palette-paper: #f3f0e8; /* Default page; text on the moss scheme */
+  --palette-linen: #e9e6db; /* Alternate section surface, feature panels */
+  --palette-flax: #c5c3bb; /* Hairlines on light (decorative only) */
+  --palette-taupe: #7f7e76; /* Control boundaries on light */
+  --palette-stone: #63635b; /* Secondary text on light */
+  --palette-ink: #23241d; /* Text on light */
+  --palette-moss: #31372e; /* The dark surface: announcement bar, footer */
+  --palette-fern: #3b4138; /* Raised surfaces on moss */
+  --palette-smoke: #494e45; /* Hairlines on moss (decorative only) */
+  --palette-dust: #8f9188; /* Control boundaries on moss */
+  --palette-oat: #b0b0a7; /* Secondary text on moss */
+
+  /*
+   * The accent: none (decided 2026-09-25). The role maps to ink on light
+   * schemes and paper on moss, so sale states rely on their label and the
+   * struck-through price. To try a colour later, change these two lines (a
+   * darker shade for light schemes, a lighter one for moss) and run
+   * `pnpm check:contrast`; the accent lab in DESIGN_SYSTEM.md generates pairs.
+   */
+  --palette-accent: #23241d; /* None: same as ink */
+  --palette-accent-bright: #f3f0e8; /* None: same as paper */
+
+  /* Errors stay red whatever the accent is. */
+  --palette-error: #a3281f;
+  --palette-error-bright: #f3988a;
+
+  /* --------------------------------------------------------------------------
+   * Semantic colours. These defaults ARE the paper scheme; `.scheme-*` below
+   * remaps them. Minimum contrast each must keep against `surface` and
+   * `surface-raised` is noted on the right (enforced by check:contrast).
+   * ------------------------------------------------------------------------ */
+  --color-*: initial;
+
+  --color-surface: var(--palette-paper); /* Section background */
+  --color-surface-raised: var(
+    --palette-bone
+  ); /* Cards, inputs, drawers, dialogs */
+  --color-fg: var(--palette-ink); /* Text, icons, primary buttons: ≥ 7:1 */
+  --color-fg-muted: var(
+    --palette-stone
+  ); /* Secondary text, placeholders: ≥ 4.5:1 */
+  --color-line: var(--palette-flax); /* Decorative hairlines only: no minimum */
+  --color-control: var(--palette-taupe); /* Input/control boundaries: ≥ 3:1 */
+  --color-accent: var(
+    --palette-accent
+  ); /* The accent role (currently none = ink): ≥ 4.5:1 */
+  --color-on-accent: var(--palette-bone); /* Text on an accent fill: ≥ 4.5:1 */
+  --color-error: var(--palette-error); /* Error text, icons, borders: ≥ 4.5:1 */
+  --color-focus: var(--palette-ink); /* Focus ring: ≥ 3:1 */
+
+  /*
+   * Overlays for text on photography. Scheme-independent. Each opacity sits
+   * ~3 points above the minimum that keeps text compliant over a worst-case
+   * pixel (pure white under the scrim, pure black under the veil):
+   *   scrim / veil: ≥ 4.5:1, any text      scrim-subtle / veil-subtle: ≥ 3:1,
+   *   large display text only (≥ 24px). See DESIGN_SYSTEM.md → "Type on photography".
+   */
+  --color-scrim: color-mix(in srgb, var(--palette-ink) 70%, transparent);
+  --color-scrim-subtle: color-mix(in srgb, var(--palette-ink) 56%, transparent);
+  --color-veil: color-mix(in srgb, var(--palette-paper) 61%, transparent);
+  --color-veil-subtle: color-mix(
+    in srgb,
+    var(--palette-paper) 49%,
+    transparent
+  );
+
+  /* --------------------------------------------------------------------------
+   * Typography: system typefaces, so nothing is downloaded or preloaded.
+   * Georgia for display (400 + italic, never bold), Arial for everything
+   * else (400; 700 only for <strong>).
+   * ------------------------------------------------------------------------ */
+  --font-*: initial;
+  --font-display: Georgia, serif;
+  --font-body: Arial, sans-serif;
+
+  /* Makes Tailwind's preflight use our body font for <html> */
+  --default-font-family: var(--font-body);
+
+  /* The only two weights these typefaces ship with */
+  --font-weight-*: initial;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+
+  /*
+   * Type scale: four display sizes and five text sizes, composed for
+   * image-led pages on large screens. Display sizes are fluid
+   * between 375px and 1920px viewports (rem + vw, so browser zoom still
+   * works). Every fluid maximum is at most
+   * 2.5× its minimum: that keeps SC 1.4.4 (200% text at the browser's 500%
+   * zoom limit). Minimums were measured so long words fit a 320px screen
+   * (SC 1.4.10). Keep both properties when changing a value.
+   * Each size carries its own line-height/letter-spacing, so `text-display-lg`
+   * is the whole style: no need to pair it with `leading-*`.
+   */
+  --text-*: initial;
+
+  --text-display-xl: clamp(
+    2.75rem,
+    1.749rem + 4.272vw,
+    6.875rem
+  ); /* 44 → 110px (89 at 1440): the page's h1 */
+  --text-display-xl--line-height: 0.95;
+  --text-display-xl--letter-spacing: -0.02em;
+
+  --text-display-lg: clamp(
+    2rem,
+    1.393rem + 2.589vw,
+    4.5rem
+  ); /* 32 → 72px (60 at 1440): section headings */
+  --text-display-lg--line-height: 1.05;
+  --text-display-lg--letter-spacing: -0.015em;
+
+  --text-display-md: clamp(
+    1.5rem,
+    1.257rem + 1.036vw,
+    2.5rem
+  ); /* 24 → 40px (35 at 1440): feature titles, wordmark */
+  --text-display-md--line-height: 1.15;
+  --text-display-md--letter-spacing: -0.01em;
+
+  --text-display-sm: clamp(
+    1.25rem,
+    1.159rem + 0.388vw,
+    1.625rem
+  ); /* 20 → 26px (24 at 1440): journal titles, drawer titles */
+  --text-display-sm--line-height: 1.25;
+  --text-display-sm--letter-spacing: -0.005em;
+
+  --text-lg: 1.125rem; /* Lead paragraphs; product names in cards (serif) */
+  --text-lg--line-height: 1.6;
+
+  --text-base: 1rem; /* Body copy and all form inputs */
+  --text-base--line-height: 1.6;
+
+  --text-sm: 0.875rem; /* Buttons, links, nav, captions, meta, prices */
+  --text-sm--line-height: 1.5;
+
+  --text-xs: 0.75rem; /* Legal fine print only (never below this) */
+  --text-xs--line-height: 1.5;
+
+  --text-label: 0.75rem; /* Eyebrows, spec lines, badges, dates. ALWAYS `uppercase` */
+  --text-label--line-height: 1.3;
+  --text-label--letter-spacing: 0.12em;
+  --text-label--font-weight: 400; /* Regular, widely tracked: set apart by case and spacing, not weight */
+
+  /* --------------------------------------------------------------------------
+   * Spacing
+   * Tailwind's 4px base unit is kept (p-4 = 1rem). Named tokens below are for
+   * page-level rhythm that should scale with the viewport.
+   * ------------------------------------------------------------------------ */
+  --spacing-gutter: clamp(
+    1.25rem,
+    6.4vw,
+    8rem
+  ); /* 24 → 128px: page side margin, 6.4% of the viewport */
+  --spacing-section: clamp(
+    4rem,
+    3.029rem + 4.142vw,
+    8rem
+  ); /* 64 → 128px (108 at 1440): between sections */
+  --spacing-section-sm: clamp(
+    2.5rem,
+    1.893rem + 2.589vw,
+    5rem
+  ); /* 40 → 80px: tighter sections */
+
+  /* --------------------------------------------------------------------------
+   * Layout widths (→ max-w-page, max-w-reading, max-w-narrow)
+   * Breakpoints are Tailwind's defaults (sm 40rem, md 48rem, lg 64rem,
+   * xl 80rem, 2xl 96rem) and are deliberately not redefined here.
+   * ------------------------------------------------------------------------ */
+  --container-page: 120rem; /* Outer page width, including gutters (1920px): image-led rows stay wide on large screens */
+  --container-reading: 32rem; /* Running text: ~74 characters of Arial (SC 1.4.8 caps at 80) */
+  --container-narrow: 28rem; /* Forms, newsletter, password page */
+
+  /* --------------------------------------------------------------------------
+   * Shape: square corners everywhere, like printed labels.
+   * No radius tokens exist; `rounded-full` is kept for swatches and dots.
+   * ------------------------------------------------------------------------ */
+  --radius-*: initial;
+
+  --aspect-product: 4 / 5; /* Product images, split-section images, mobile hero crops */
+  --aspect-landscape: 4 / 3; /* Journal cards */
+  --aspect-feature: 5 / 3; /* Paired feature images ("From the land", "From the sea") */
+
+  /* --------------------------------------------------------------------------
+   * Elevation: none on the page. Hierarchy comes from surface colour and
+   * hairlines. Only things that genuinely float get a shadow.
+   * ------------------------------------------------------------------------ */
+  --shadow-*: initial;
+  --shadow-overlay: 0 24px 64px -16px
+    color-mix(in srgb, var(--palette-ink) 32%, transparent);
+
+  /* --------------------------------------------------------------------------
+   * Motion: calm and quick. Reduced-motion users get none (see base.css).
+   * ------------------------------------------------------------------------ */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --default-transition-duration: 200ms;
+  --default-transition-timing-function: var(--ease-out-soft);
+}
+
+/*
+ * ============================================================================
+ * SCHEMES: remap the semantic colours for one section and everything in it.
+ * ============================================================================
+ *
+ * Put a scheme on a section's outermost element, usually with `full-width`:
+ *   <div class="full-width scheme-moss"> … </div>
+ * It sets the background and text colour itself, and every semantic utility
+ * inside (text-fg-muted, border-control, the focus ring …) follows.
+ *
+ * They're in `@layer components`, so a utility on the same element still wins,
+ * e.g. `scheme-moss bg-transparent` for light text over a photo.
+ *
+ * `.scheme-paper` repeats the defaults in @theme so a light block can sit
+ * inside a dark one. check:contrast fails if the two ever differ.
+ */
+@layer components {
+  .scheme-paper,
+  .scheme-linen,
+  .scheme-moss {
+    background-color: var(--color-surface);
+    color: var(--color-fg);
+  }
+
+  .scheme-paper,
+  .scheme-linen {
+    --color-surface: var(--palette-paper);
+    --color-surface-raised: var(--palette-bone);
+    --color-fg: var(--palette-ink);
+    --color-fg-muted: var(--palette-stone);
+    --color-line: var(--palette-flax);
+    --color-control: var(--palette-taupe);
+    --color-accent: var(--palette-accent);
+    --color-on-accent: var(--palette-bone);
+    --color-error: var(--palette-error);
+    --color-focus: var(--palette-ink);
+  }
+
+  .scheme-linen {
+    --color-surface: var(--palette-linen);
+  }
+
+  .scheme-moss {
+    --color-surface: var(--palette-moss);
+    --color-surface-raised: var(--palette-fern);
+    --color-fg: var(--palette-paper);
+    --color-fg-muted: var(--palette-oat);
+    --color-line: var(--palette-smoke);
+    --color-control: var(--palette-dust);
+    --color-accent: var(--palette-accent-bright);
+    --color-on-accent: var(--palette-ink);
+    --color-error: var(--palette-error-bright);
+    --color-focus: var(--palette-paper);
+  }
+}
+
+/* Visitors who ask for more contrast get full-strength text and lines. */
+@media (prefers-contrast: more) {
+  :root,
+  .scheme-paper,
+  .scheme-linen {
+    --color-fg-muted: var(--palette-ink);
+    --color-line: var(--palette-taupe);
+  }
+
+  .scheme-moss {
+    --color-fg-muted: var(--palette-paper);
+    --color-line: var(--palette-dust);
+  }
+}

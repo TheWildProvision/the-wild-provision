@@ -1,0 +1,36 @@
+{
+  "name": "the-wild-provision",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Custom Shopify theme for The Wild Provision: premium single-ingredient dog chews.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm build && concurrently --kill-others --names assets,shopify --prefix-colors blue,green \"pnpm dev:assets\" \"pnpm dev:shopify\"",
+    "dev:assets": "vite build --watch",
+    "dev:shopify": "shopify theme dev",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "check:contrast": "node scripts/check-contrast.mjs",
+    "theme:check": "shopify theme check",
+    "check": "pnpm typecheck && pnpm check:contrast && pnpm theme:check && pnpm build"
+  },
+  "engines": {
+    "node": ">=22.12"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.6.0",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "pnpm@12.6.0",
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "concurrently": "^10.0.5",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.0"
+  }
+}

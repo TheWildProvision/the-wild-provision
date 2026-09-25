@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    // Liquid syntax, Theme Check linting, schema validation, docs on hover
+    "Shopify.theme-check-vscode",
+    // Tailwind class autocomplete, hover previews, and lint
+    "bradlc.vscode-tailwindcss"
+  ]
+}

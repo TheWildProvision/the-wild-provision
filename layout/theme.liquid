@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    {% comment %}
+      No web fonts: the design system uses system typefaces (Georgia, Arial),
+      so there's nothing to declare or preload. See docs/DESIGN_SYSTEM.md → "Typography".
+    {% endcomment %}
+
+    {% comment %}
+      Theme bundle built by Vite from src/ (`pnpm build`). Never edit assets/theme.* directly.
+      - theme.css: Tailwind utilities, design tokens (CSS variables) and base styles.
+      - theme.js: ES module, so it's deferred automatically and never blocks rendering.
+    {% endcomment %}
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'theme.js' | asset_url }}" type="module"></script>
+
+    {% # Social, title, etc. %}
+    {% render 'meta-tags' %}
+
+    {{ content_for_header }}
+  </head>
+
+  <body>
+    {% sections 'header-group' %}
+
+    {{ content_for_layout }}
+
+    {% sections 'footer-group' %}
+  </body>
+</html>
