@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-blog",
+      "settings": {
+        "eyebrow": "Stories, origins and observations"
+      }
+    }
+  },
+  "order": ["main"]
+}

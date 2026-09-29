@@ -1,0 +1,104 @@
+<div class="container main-search">
+  <header class="page-heading">
+    <p class="label">{{ 'search.general.eyebrow' | t }}</p>
+    <h1>{{ 'search.general.title' | t }}</h1>
+    <form class="search-form" action="{{ routes.search_url }}" method="get" role="search">
+      <label class="visually-hidden" for="Search-{{ section.id }}">{{ 'search.general.label' | t }}</label>
+      <input
+        class="field"
+        id="Search-{{ section.id }}"
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="{{ 'search.general.placeholder' | t }}"
+      >
+      <input type="hidden" name="options[prefix]" value="last">
+      <button class="button" type="submit">{{ 'general.search.title' | t }}</button>
+    </form>
+  </header>
+
+  {%- if search.performed -%}
+    <p class="main-search__count text-small text-muted">
+      {{- 'search.general.results' | t: count: search.results_count, terms: search.terms -}}
+    </p>
+    {%- paginate search.results by 12 -%}
+      {%- if search.results_count == 0 -%}
+        <div class="empty-state">
+          <p>{{ 'search.general.no_results' | t }}</p>
+        </div>
+      {%- else -%}
+        {%- assign product_results = search.results | where: 'object_type', 'product' -%}
+        {%- assign other_results = search.results | reject: 'object_type', 'product' -%}
+        {%- if product_results.size > 0 -%}
+          <ul class="product-grid list-reset">
+            {%- for item in product_results -%}
+              {% render 'product-card', product: item, heading_level: 2 %}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        {%- if other_results.size > 0 -%}
+          <ul class="main-search__others list-reset">
+            {%- for item in other_results -%}
+              <li class="search-result card">
+                <p class="label text-muted">
+                  {%- case item.object_type -%}
+                    {%- when 'article' -%}{{ 'search.types.article' | t }}
+                    {%- when 'page' -%}{{ 'search.types.page' | t }}
+                    {%- else -%}{{ 'search.types.other' | t }}
+                  {%- endcase -%}
+                </p>
+                <h2 class="search-result__title text-heading">
+                  <a class="card__link" href="{{ item.url }}">{{ item.title | escape }}</a>
+                </h2>
+                <p class="text-small text-muted">{{ item.content | strip_html | truncatewords: 28 }}</p>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      {%- endif -%}
+      {% render 'pagination', paginate: paginate %}
+    {%- endpaginate -%}
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .main-search {
+    padding-bottom: var(--space-section);
+  }
+
+  .search-form {
+    display: flex;
+    gap: var(--space-3);
+    max-width: 40rem;
+    margin-top: var(--space-6);
+  }
+
+  .search-form .field {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .main-search__count {
+    margin-bottom: var(--space-6);
+  }
+
+  .main-search__others {
+    margin-top: var(--space-7);
+    border-top: var(--border-width) solid var(--color-rule);
+  }
+
+  .search-result {
+    display: grid;
+    gap: var(--space-2);
+    padding-block: var(--space-5);
+    border-bottom: var(--border-width) solid var(--color-rule);
+    container-type: inline-size;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.search.name",
+  "settings": []
+}
+{% endschema %}

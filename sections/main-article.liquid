@@ -1,0 +1,183 @@
+<article class="main-article">
+  <header class="main-article__header">
+    <p class="label"><a href="{{ blog.url }}">{{ blog.title | escape }}</a></p>
+    <h1>{{ article.title | escape }}</h1>
+    <p class="text-small text-muted">
+      {{ article.published_at | date: '%d %B %Y' }}
+      {%- if section.settings.show_author %} &middot; {{ article.author | escape }}{% endif -%}
+    </p>
+  </header>
+
+  {%- if article.image -%}
+    <figure class="main-article__cover media">
+      {% render 'responsive-image', image: article.image, eager: true, sizes: '(max-width: 600px) calc(100vw - 2.5rem), 32rem' %}
+    </figure>
+  {%- endif -%}
+
+  <div class="main-article__body container">
+    <div class="main-article__column measure">
+      <div class="rte">{{ article.content }}</div>
+      <a class="main-article__back arrow-link" href="{{ blog.url }}">
+        <span class="arrow" aria-hidden="true">&larr;</span>
+        {{- 'blogs.article.back' | t: blog: blog.title -}}
+      </a>
+
+      {%- if blog.comments_enabled? -%}
+        <section class="comments" aria-labelledby="Comments-{{ section.id }}">
+          <h2 id="Comments-{{ section.id }}">{{ 'blogs.comments.title' | t }}</h2>
+          {%- paginate article.comments by 10 -%}
+            {%- if article.comments.size > 0 -%}
+              <ul class="comments__list list-reset">
+                {%- for comment in article.comments -%}
+                  <li class="comments__item">
+                    <p class="text-small text-muted">
+                      {{- comment.author | escape }} &middot; {{ comment.created_at | time_tag: format: 'long_date' -}}
+                    </p>
+                    <div class="rte">{{ comment.content }}</div>
+                  </li>
+                {%- endfor -%}
+              </ul>
+              {% render 'pagination', paginate: paginate %}
+            {%- endif -%}
+          {%- endpaginate -%}
+
+          {%- form 'new_comment', article, class: 'comments__form form-grid' -%}
+            <h3>{{ 'blogs.comments.form_title' | t }}</h3>
+            {%- if form.posted_successfully? -%}
+              <p class="form-message" role="status" tabindex="-1" autofocus>
+                {%- if blog.moderated? -%}
+                  {{ 'blogs.comments.success_moderated' | t }}
+                {%- else -%}
+                  {{ 'blogs.comments.success' | t }}
+                {%- endif -%}
+              </p>
+            {%- endif -%}
+            {%- if form.errors -%}
+              <div class="form-message form-message--error" role="alert">{{ form.errors | default_errors }}</div>
+            {%- endif -%}
+            <div class="field-row">
+              <div class="form-field">
+                <label for="CommentAuthor-{{ section.id }}">{{ 'general.forms.name' | t }}</label>
+                <input
+                  class="field"
+                  id="CommentAuthor-{{ section.id }}"
+                  name="comment[author]"
+                  value="{{ form.author | escape }}"
+                  autocomplete="name"
+                  required
+                  {% if form.errors contains 'author' %}
+                    aria-invalid="true"
+                  {% endif %}
+                >
+              </div>
+              <div class="form-field">
+                <label for="CommentEmail-{{ section.id }}">{{ 'general.forms.email' | t }}</label>
+                <input
+                  class="field"
+                  id="CommentEmail-{{ section.id }}"
+                  type="email"
+                  name="comment[email]"
+                  value="{{ form.email | escape }}"
+                  autocomplete="email"
+                  autocapitalize="off"
+                  spellcheck="false"
+                  required
+                  {% if form.errors contains 'email' %}
+                    aria-invalid="true"
+                  {% endif %}
+                >
+              </div>
+            </div>
+            <div class="form-field">
+              <label for="CommentBody-{{ section.id }}">{{ 'blogs.comments.body' | t }}</label>
+              <textarea
+                class="field"
+                id="CommentBody-{{ section.id }}"
+                name="comment[body]"
+                rows="5"
+                required
+                {% if form.errors contains 'body' %}
+                  aria-invalid="true"
+                {% endif %}
+              >{{ form.body | escape }}</textarea>
+            </div>
+            {%- if blog.moderated? -%}
+              <p class="text-small text-muted">{{ 'blogs.comments.moderated' | t }}</p>
+            {%- endif -%}
+            <div>
+              <button class="button" type="submit">
+                {{- 'blogs.comments.submit' | t -}}
+                <span class="arrow" aria-hidden="true">&rarr;</span>
+              </button>
+            </div>
+          {%- endform -%}
+        </section>
+      {%- endif -%}
+    </div>
+  </div>
+</article>
+
+<script type="application/ld+json">
+  {{ article | structured_data }}
+</script>
+
+{% stylesheet %}
+  .main-article {
+    padding-bottom: var(--space-section);
+  }
+
+  .main-article__header {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-5);
+    max-width: 58rem;
+    margin-inline: auto;
+    padding: var(--space-8) var(--gutter) var(--space-7);
+    text-align: center;
+    container-type: inline-size;
+  }
+
+  .main-article__cover {
+    width: min(32rem, 100% - 2 * var(--gutter));
+    aspect-ratio: var(--ratio-portrait);
+    margin: 0 auto var(--space-8);
+  }
+
+  .main-article__column {
+    margin-inline: auto;
+  }
+
+  .main-article__back {
+    margin-top: var(--space-7);
+  }
+
+  .comments {
+    display: grid;
+    gap: var(--space-6);
+    margin-top: var(--space-8);
+    padding-top: var(--space-7);
+    border-top: var(--border-width) solid var(--color-rule);
+  }
+
+  .comments__item {
+    display: grid;
+    gap: var(--space-2);
+    padding-block: var(--space-5);
+    border-bottom: var(--border-width) solid var(--color-rule);
+  }
+
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.article.name",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "t:sections.article.show_author",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

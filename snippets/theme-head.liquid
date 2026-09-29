@@ -1,0 +1,29 @@
+{% doc %}
+  Renders the shared <head> contents: meta tags, favicon, the critical
+  stylesheet and the no-js to js class swap.
+
+  @example
+  {% render 'theme-head' %}
+{% enddoc %}
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="{{ canonical_url }}">
+{%- if shop.brand.square_logo != blank -%}
+  <link rel="icon" type="image/png" href="{{ shop.brand.square_logo | image_url: width: 32, height: 32 }}">
+  <link rel="apple-touch-icon" href="{{ shop.brand.square_logo | image_url: width: 180, height: 180 }}">
+{%- endif -%}
+<title>
+  {{- page_title | escape -}}
+  {%- if current_tags %} &ndash; {{ current_tags | join: ', ' | escape }}{% endif -%}
+  {%- if current_page != 1 %} &ndash; {{ 'general.pagination.page' | t: page: current_page }}{% endif -%}
+  {%- unless page_title contains shop.name %} &ndash; {{ shop.name | escape }}{% endunless -%}
+</title>
+{%- if page_description != blank -%}
+  <meta name="description" content="{{ page_description | escape }}">
+{%- endif -%}
+{% render 'social-meta' %}
+{{ 'critical.css' | asset_url | stylesheet_tag }}
+<script>
+  document.documentElement.classList.replace('no-js', 'js');
+</script>

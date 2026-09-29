@@ -1,0 +1,38 @@
+{
+  "sections": {
+    "intro": {
+      "type": "page-intro",
+      "settings": {
+        "eyebrow": "Our approach",
+        "heading": "Less, but considered.",
+        "text": "<p>A simple idea: let the ingredient remain recognisable.</p>"
+      }
+    },
+    "story": {
+      "type": "image-with-text",
+      "settings": {
+        "eyebrow": "A simpler approach",
+        "heading": "Less intervention. <em>More of the original.</em>",
+        "text": "<p>We are drawn to the things that do not need reinventing. Recognisable animal parts, with their own shapes, textures and character.</p><p>Our starting point is simple: choose carefully, process only as needed, and be clear about what is inside.</p>",
+        "image": "shopify://shop_images/b4d3d7162ec4e753d1187f534deec63e.jpg",
+        "link_label": "",
+        "link": "",
+        "reverse": false,
+        "dark": false
+      }
+    },
+    "statement": {
+      "type": "manifesto",
+      "settings": {
+        "eyebrow": "Our point of view",
+        "heading": "A shorter ingredient list. A clearer connection to the <em>natural world.</em>",
+        "text": "<p>We believe a good provision begins with something worth keeping, not something that needs disguising.</p>"
+      }
+    },
+    "page": {
+      "type": "page-body",
+      "settings": {}
+    }
+  },
+  "order": ["intro", "story", "statement", "page"]
+}

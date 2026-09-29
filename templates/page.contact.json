@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-contact",
+      "settings": {
+        "eyebrow": "Correspondence",
+        "heading": "A conversation, naturally.",
+        "text": "<p>Questions about a provision, an order, or the way we do things? We would be glad to hear from you.</p>",
+        "show_email": false
+      }
+    }
+  },
+  "order": ["main"]
+}

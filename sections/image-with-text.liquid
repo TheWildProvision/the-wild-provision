@@ -1,0 +1,144 @@
+<section
+  {% if section.settings.anchor != blank %}id="{{ section.settings.anchor | handleize }}"{% endif %}
+  class="split-story {% if section.settings.dark %}surface--dark{% else %}surface--panel{% endif %}{% if section.settings.reverse %} split-story--reverse{% endif %}"
+  aria-labelledby="Story-{{ section.id }}"
+>
+  <div class="split-story__media media">
+    {% render 'responsive-image', image: section.settings.image, sizes: '(max-width: 800px) 100vw, 50vw', placeholder: 'lifestyle-1' %}
+  </div>
+  <div class="split-story__copy">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="label">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+    <h2 id="Story-{{ section.id }}">{{ section.settings.heading }}</h2>
+    {%- if section.settings.text != blank -%}
+      <div class="split-story__text rte text-muted">{{ section.settings.text }}</div>
+    {%- endif -%}
+    {%- if section.settings.link != blank and section.settings.link_label != blank -%}
+      <a class="arrow-link" href="{{ section.settings.link }}">
+        {{- section.settings.link_label | escape -}}
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .split-story {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    container-type: inline-size;
+  }
+
+  .split-story:not(:has(.split-story__media > *)) {
+    grid-template-columns: 1fr;
+  }
+
+  .split-story:not(:has(.split-story__media > *)) .split-story__media {
+    display: none;
+  }
+
+  .split-story--reverse .split-story__media {
+    order: 2;
+  }
+
+  .split-story__media {
+    min-height: 35.625rem;
+  }
+
+  .split-story__copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: var(--space-5);
+    padding: clamp(var(--space-7), 6vw, 6rem);
+  }
+
+  .split-story__copy h2 em {
+    display: block;
+  }
+
+  .split-story__text {
+    max-width: var(--measure-narrow);
+  }
+
+  @media (max-width: 800px) {
+    .split-story {
+      grid-template-columns: 1fr;
+    }
+
+    .split-story--reverse .split-story__media {
+      order: 0;
+    }
+
+    .split-story__media {
+      min-height: 0;
+      aspect-ratio: var(--ratio-portrait);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.image_with_text.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow",
+      "info": "t:info.eyebrow"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "t:defaults.image_with_text.heading"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:labels.text"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:labels.image",
+      "info": "t:info.image_alt"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "t:labels.link_label"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "t:labels.link"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "t:sections.image_with_text.anchor",
+      "info": "t:sections.image_with_text.anchor_info"
+    },
+    {
+      "type": "checkbox",
+      "id": "reverse",
+      "label": "t:sections.image_with_text.reverse",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "dark",
+      "label": "t:sections.image_with_text.dark",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.image_with_text.name"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,123 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "Single-ingredient chews",
+        "heading": "In their <em>own form.</em>",
+        "text": "<p>Anatomical animal parts. Minimal processing. A considered collection of provisions for the dogs we share our lives with.</p>",
+        "button_label": "Explore all provisions",
+        "link": "shopify://collections/all-provisions",
+        "show_slogan": true,
+        "image": "shopify://shop_images/311162a7f8fb87316f3d033c2e6e322a.jpg"
+      }
+    },
+    "essentials": {
+      "type": "principles-strip",
+      "blocks": {
+        "animal": {
+          "type": "principle",
+          "settings": {
+            "text": "One animal."
+          }
+        },
+        "ingredient": {
+          "type": "principle",
+          "settings": {
+            "text": "One ingredient."
+          }
+        },
+        "origin": {
+          "type": "principle",
+          "settings": {
+            "text": "One origin."
+          }
+        }
+      },
+      "block_order": [
+        "animal",
+        "ingredient",
+        "origin"
+      ],
+      "settings": {}
+    },
+    "selected": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "The collection",
+        "heading": "Nothing extra. Nothing ordinary.",
+        "text": "",
+        "collection": "featured-provisions",
+        "limit": 4
+      }
+    },
+    "philosophy": {
+      "type": "image-with-text",
+      "settings": {
+        "eyebrow": "A simpler approach",
+        "heading": "Less intervention. <em>More of the original.</em>",
+        "text": "<p>We are drawn to the things that do not need reinventing. Recognisable animal parts, with their own shapes, textures and character.</p><p>Our starting point is simple: choose carefully, process only as needed, and be clear about what is inside.</p>",
+        "image": "shopify://shop_images/43ee9ba4ae8ee418acf4aebe94b29245.jpg",
+        "link_label": "Our approach",
+        "link": "shopify://pages/our-approach",
+        "reverse": false,
+        "dark": false,
+        "anchor": "our-approach"
+      }
+    },
+    "origins": {
+      "type": "origins",
+      "blocks": {
+        "land": {
+          "type": "origin",
+          "settings": {
+            "collection": "from-the-land",
+            "image": "shopify://shop_images/5ed88f7e17354bcfabc19f0a39cab17a.jpg"
+          }
+        },
+        "sea": {
+          "type": "origin",
+          "settings": {
+            "collection": "from-the-sea",
+            "image": "shopify://shop_images/156655dc7a8e3d9c66e83441ddf31080.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "land",
+        "sea"
+      ],
+      "settings": {
+        "eyebrow": "Origins",
+        "heading": "A sense of place.",
+        "text": "Different landscapes. The same philosophy."
+      }
+    },
+    "manifesto": {
+      "type": "manifesto",
+      "settings": {
+        "eyebrow": "Our point of view",
+        "heading": "A shorter ingredient list. A clearer connection to the <em>natural world.</em>",
+        "text": "<p>We believe a good provision begins with something worth keeping, not something that needs disguising.</p>"
+      }
+    },
+    "journal": {
+      "type": "journal",
+      "settings": {
+        "eyebrow": "The journal",
+        "heading": "Notes from the field.",
+        "blog": "field-notes",
+        "limit": 3
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "essentials",
+    "selected",
+    "philosophy",
+    "origins",
+    "manifesto",
+    "journal"
+  ]
+}

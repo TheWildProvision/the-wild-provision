@@ -1,0 +1,67 @@
+{%- assign journal_blog = section.settings.blog -%}
+<section class="container section" aria-labelledby="Journal-{{ section.id }}">
+  <div class="section-heading">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="label">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h2 id="Journal-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+    </div>
+    {%- if journal_blog != blank -%}
+      <a class="arrow-link" href="{{ journal_blog.url }}">
+        {{- journal_blog.title | escape -}}
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    {%- endif -%}
+  </div>
+
+  {%- if journal_blog != blank and journal_blog.articles_count > 0 -%}
+    <ul class="journal-grid list-reset">
+      {%- for article in journal_blog.articles limit: section.settings.limit -%}
+        {% render 'article-card', article: article %}
+      {%- endfor -%}
+    </ul>
+  {%- elsif request.design_mode -%}
+    <p class="editor-note">{{ 'sections.journal.empty' | t }}</p>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.journal.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow",
+      "info": "t:info.eyebrow",
+      "default": "t:defaults.journal.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "t:defaults.journal.heading"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "t:labels.blog"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "t:sections.journal.limit",
+      "default": 3,
+      "min": 3,
+      "max": 9,
+      "step": 3
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.journal.name"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,65 @@
+{% doc %}
+  Renders a price. This is the only place money is formatted, so the
+  "Show currency code in prices" setting applies everywhere.
+
+  @param {number} amount - The price, in the currency's subunits
+  @param {number} [compare_at] - Compare-at price; shown struck through when higher than amount
+  @param {boolean} [from] - Prefix with "From" when the product's price varies
+  @param {number} [unit_price] - Unit price, shown with its measurement
+  @param {object} [unit_measurement] - The unit_price_measurement object
+
+  @example
+  {% render 'price', amount: product.price, compare_at: product.compare_at_price, from: product.price_varies %}
+{% enddoc %}
+
+{%- liquid
+  if settings.show_currency
+    assign formatted = amount | money_with_currency
+    assign formatted_compare = compare_at | money_with_currency
+    assign formatted_unit = unit_price | money_with_currency
+  else
+    assign formatted = amount | money
+    assign formatted_compare = compare_at | money
+    assign formatted_unit = unit_price | money
+  endif
+  assign on_sale = false
+  if compare_at > amount
+    assign on_sale = true
+  endif
+-%}
+<span class="price">
+  {%- if on_sale -%}
+    <span class="visually-hidden">{{ 'products.price.sale' | t }}</span>
+  {%- endif -%}
+  {%- if from -%}
+    {{ 'products.price.from' | t: price: formatted }}
+  {%- else -%}
+    {{ formatted }}
+  {%- endif -%}
+  {%- if on_sale %}
+    <s class="price__compare"><span class="visually-hidden">{{ 'products.price.regular' | t }}</span>{{ formatted_compare }}</s>
+  {%- endif -%}
+  {%- if unit_measurement %}
+    {%- capture unit -%}
+      {%- if unit_measurement.reference_value != 1 -%}{{ unit_measurement.reference_value }}{%- endif -%}
+      {{- unit_measurement.reference_unit -}}
+    {%- endcapture %}
+    <span class="price__unit">{{ 'products.price.unit' | t: price: formatted_unit, unit: unit }}</span>
+  {%- endif -%}
+</span>
+
+{% stylesheet %}
+  .price__compare,
+  .price__unit {
+    color: var(--color-text-muted);
+  }
+
+  .price__compare {
+    margin-left: var(--space-2);
+  }
+
+  .price__unit {
+    display: block;
+    font-size: var(--text-small);
+  }
+{% endstylesheet %}

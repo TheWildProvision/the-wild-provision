@@ -1,0 +1,29 @@
+<article class="container main-page">
+  <header class="page-heading">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="label">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+    <h1>{{ page.title | escape }}</h1>
+  </header>
+  <div class="rte measure">{{ page.content }}</div>
+</article>
+
+{% stylesheet %}
+  .main-page {
+    padding-bottom: var(--space-section);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.page.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow",
+      "info": "t:info.eyebrow"
+    }
+  ]
+}
+{% endschema %}

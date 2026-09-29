@@ -1,0 +1,203 @@
+{%- capture social_links -%}
+  {% render 'social-links' %}
+{%- endcapture -%}
+
+<footer class="site-footer surface--dark">
+  <div class="container">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        {% render 'brand', modifier: 'brand--footer' %}
+        {%- if shop.brand.short_description != blank -%}
+          <p class="site-footer__intro text-small text-muted">{{ shop.brand.short_description | escape }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.show_localization -%}
+          {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
+            {% form 'localization', class: 'site-footer__localization' %}
+              {%- if localization.available_countries.size > 1 -%}
+                <div class="form-field">
+                  <label for="FooterCountry-{{ section.id }}">{{ 'localization.country' | t }}</label>
+                  <select class="field" id="FooterCountry-{{ section.id }}" name="country_code">
+                    {%- for country in localization.available_countries -%}
+                      <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+                        {{- country.name | escape }} ({{ country.currency.iso_code }})
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                </div>
+              {%- endif -%}
+              {%- if localization.available_languages.size > 1 -%}
+                <div class="form-field">
+                  <label for="FooterLanguage-{{ section.id }}">{{ 'localization.language' | t }}</label>
+                  <select class="field" id="FooterLanguage-{{ section.id }}" name="language_code">
+                    {%- for language in localization.available_languages -%}
+                      <option value="{{ language.iso_code }}" lang="{{ language.iso_code }}"{% if language.iso_code == localization.language.iso_code %} selected{% endif %}>
+                        {{- language.endonym_name | capitalize -}}
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                </div>
+              {%- endif -%}
+              <button class="button" type="submit">{{ 'localization.update' | t }}</button>
+            {% endform %}
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.menu != blank -%}
+        <div class="site-footer__column">
+          <h2 class="label" id="FooterMenu-{{ section.id }}">{{ section.settings.menu.title | escape }}</h2>
+          <nav aria-labelledby="FooterMenu-{{ section.id }}">
+            {% render 'menu', menu: section.settings.menu, block: 'footer-menu' %}
+          </nav>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.support_menu != blank -%}
+        <div class="site-footer__column">
+          <h2 class="label" id="FooterSupport-{{ section.id }}">{{ section.settings.support_menu.title | escape }}</h2>
+          <nav aria-labelledby="FooterSupport-{{ section.id }}">
+            {% render 'menu', menu: section.settings.support_menu, block: 'footer-menu' %}
+          </nav>
+          {{ social_links }}
+        </div>
+      {%- elsif social_links != blank -%}
+        <div class="site-footer__column">
+          <h2 class="label">{{ 'sections.footer.social' | t }}</h2>
+          {{ social_links }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="site-footer__bottom text-small text-muted">
+      <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}</p>
+      {%- if shop.brand.slogan != blank -%}
+        <p>{{ shop.brand.slogan | escape }}</p>
+      {%- endif -%}
+      {%- if shop.policies.size > 0 -%}
+        <ul class="site-footer__policies list-reset">
+          {%- for policy in shop.policies -%}
+            <li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% stylesheet %}
+  .site-footer {
+    padding-block: var(--space-8) var(--space-5);
+  }
+
+  .site-footer__top {
+    display: grid;
+    grid-template-columns: 1.7fr repeat(2, 1fr);
+    gap: var(--space-7);
+    padding-bottom: var(--space-8);
+  }
+
+  .site-footer__brand {
+    container-type: inline-size;
+  }
+
+  .site-footer__intro {
+    max-width: var(--measure-narrow);
+    margin-top: var(--space-5);
+  }
+
+  .site-footer__localization {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .site-footer__localization .field {
+    width: auto;
+    max-width: 14rem;
+    background-color: var(--color-bg);
+  }
+
+  .site-footer__column .label {
+    margin-bottom: var(--space-4);
+  }
+
+  .site-footer__column nav + .social-links {
+    margin-top: var(--space-1);
+  }
+
+  .site-footer .footer-menu__link,
+  .site-footer .social-links a,
+  .site-footer__policies a {
+    display: inline-block;
+    padding-block: var(--space-1);
+    font-size: var(--text-small);
+  }
+
+  .site-footer a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .site-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-6);
+    padding-top: var(--space-5);
+    border-top: var(--border-width) solid var(--color-rule);
+  }
+
+  .site-footer__policies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-5);
+  }
+
+  @media (max-width: 800px) {
+    .site-footer__top {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+    }
+
+    .site-footer__brand {
+      grid-column: 1 / -1;
+    }
+
+    .site-footer__bottom {
+      flex-direction: column;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.footer.name",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:sections.footer.brand_info"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "t:sections.footer.menu",
+      "default": "footer"
+    },
+    {
+      "type": "link_list",
+      "id": "support_menu",
+      "label": "t:sections.footer.support_menu",
+      "info": "t:sections.footer.support_menu_info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_localization",
+      "label": "t:sections.footer.show_localization",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

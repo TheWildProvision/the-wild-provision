@@ -1,0 +1,222 @@
+{
+  "date_formats": {
+    "long_date": "%-d %B %Y"
+  },
+  "accessibility": {
+    "breadcrumb": "Breadcrumb",
+    "main_navigation": "Main",
+    "new_window": "opens in a new window",
+    "pagination": "Pagination",
+    "product_gallery": "Product images",
+    "show_image": "Show image {{ number }}",
+    "skip_to_content": "Skip to content"
+  },
+  "blogs": {
+    "article": {
+      "back": "Back to {{ blog }}",
+      "read_more": "Read the note"
+    },
+    "comments": {
+      "body": "Comment",
+      "form_title": "Leave a note",
+      "moderated": "Comments are reviewed before they appear.",
+      "submit": "Send your note",
+      "success": "Thank you. Your comment has been posted.",
+      "success_moderated": "Thank you. Your comment will appear once it has been reviewed.",
+      "title": "The conversation"
+    },
+    "general": {
+      "empty": "The first notes are still taking shape."
+    }
+  },
+  "cart": {
+    "empty": {
+      "text": "Your bag is empty. Explore the provisions and find something for your companion.",
+      "title": "A little room for something wild."
+    },
+    "general": {
+      "eyebrow": "A considered selection",
+      "title": "Your bag",
+      "update": "Update bag",
+      "update_hint": "Update your bag after changing quantities to refresh the total."
+    },
+    "item": {
+      "quantity": "Quantity for {{ title }}",
+      "remove": "Remove"
+    },
+    "summary": {
+      "checkout": "Continue to checkout",
+      "note": "A note for your order (optional)",
+      "subtotal": "Subtotal",
+      "taxes_note": "Shipping and any applicable taxes are calculated at checkout.",
+      "title": "The essentials",
+      "total": "Estimated total"
+    }
+  },
+  "collections": {
+    "empty": {
+      "text": "There are no provisions in this collection yet.",
+      "title": "Good things take consideration."
+    },
+    "general": {
+      "product_count": {
+        "one": "{{ count }} provision",
+        "other": "{{ count }} provisions"
+      }
+    },
+    "sort": {
+      "apply": "Apply",
+      "label": "Sort by"
+    }
+  },
+  "contact": {
+    "form": {
+      "send": "Send message",
+      "success": "Thank you for your message. We will be in touch."
+    }
+  },
+  "general": {
+    "cart": {
+      "title": "Bag"
+    },
+    "forms": {
+      "email": "Email address",
+      "message": "Message",
+      "name": "Name",
+      "phone": "Phone (optional)"
+    },
+    "navigation": {
+      "account": "Account",
+      "home": "Home",
+      "menu": "Menu"
+    },
+    "pagination": {
+      "next": "Next page",
+      "page": "Page {{ page }}",
+      "previous": "Previous page"
+    },
+    "search": {
+      "title": "Search"
+    }
+  },
+  "gift_card": {
+    "apple_wallet": "Add to Apple Wallet",
+    "balance": "Remaining balance: {{ balance }}",
+    "code": "Gift card code",
+    "disabled": "This gift card has been disabled.",
+    "expired": "This gift card has expired.",
+    "expires": "Expires {{ date }}",
+    "print": "Print gift card",
+    "qr_alt": "QR code for this gift card",
+    "shop": "Visit the shop",
+    "title": "A provision, gifted."
+  },
+  "localization": {
+    "country": "Country and currency",
+    "language": "Language",
+    "update": "Update"
+  },
+  "newsletter": {
+    "consent": "By subscribing, you agree to receive email updates. Unsubscribe at any time.",
+    "label": "Your email address",
+    "submit": "Subscribe",
+    "success": "Thank you. You are on the list."
+  },
+  "not_found": {
+    "eyebrow": "404 / Off the beaten path",
+    "text": "The page you are looking for could not be found. Let us bring you back to something familiar.",
+    "title": "A little too wild."
+  },
+  "password": {
+    "entry": {
+      "label": "Password",
+      "owner": "Store owner? Log in",
+      "submit": "Enter store",
+      "toggle": "Enter store password"
+    }
+  },
+  "products": {
+    "facts": {
+      "dietary": "Dietary needs",
+      "flavour": "Flavour",
+      "form": "Form",
+      "ingredient": "Ingredient",
+      "net_weight": "Net weight",
+      "origin": "Origin",
+      "package": "Packaging",
+      "processing": "Processing"
+    },
+    "price": {
+      "from": "From {{ price }}",
+      "regular": "Regular price",
+      "sale": "Sale price",
+      "unit": "{{ price }} / {{ unit }}"
+    },
+    "product": {
+      "add_to_cart": "Add to bag",
+      "added": "Added to your bag.",
+      "adding": "Adding…",
+      "cart_error": "This item could not be added. Check your bag before trying again.",
+      "decrease": "Decrease quantity",
+      "delivery": "Delivery and returns",
+      "feeding_guide": "Feeding guide",
+      "increase": "Increase quantity",
+      "network_error": "We could not confirm the update. Check your bag before adding again.",
+      "quantity": "Quantity",
+      "sold_out": "Sold out",
+      "storage_guide": "Storage",
+      "variant": "Choose a size or option",
+      "view_cart": "View bag"
+    }
+  },
+  "search": {
+    "general": {
+      "eyebrow": "A considered search",
+      "label": "Search the shop",
+      "no_results": "No results found. Try a different word.",
+      "placeholder": "Search provisions and stories",
+      "results": {
+        "one": "{{ count }} result for “{{ terms }}”",
+        "other": "{{ count }} results for “{{ terms }}”"
+      },
+      "title": "Find your provision."
+    },
+    "types": {
+      "article": "Journal",
+      "other": "Result",
+      "page": "Page"
+    }
+  },
+  "sections": {
+    "featured_collection": {
+      "empty": "Choose a collection with products available on the Online Store channel."
+    },
+    "footer": {
+      "social": "Follow"
+    },
+    "header": {
+      "no_menu": "Choose a menu for the header. Shoppers see no navigation until you do."
+    },
+    "journal": {
+      "empty": "Choose a blog with published articles."
+    },
+    "origins": {
+      "explore": "Explore"
+    },
+    "product": {
+      "facts_missing": "Add the Ingredient, Origin and Processing product metafields to show verified product facts.",
+      "selling_plan": "This product needs a subscription or selling-plan app block before it can be bought."
+    }
+  },
+  "social": {
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "pinterest": "Pinterest",
+    "snapchat": "Snapchat",
+    "tiktok": "TikTok",
+    "tumblr": "Tumblr",
+    "twitter": "X",
+    "vimeo": "Vimeo",
+    "youtube": "YouTube"
+  }
+}

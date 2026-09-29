@@ -1,0 +1,27 @@
+{%- assign shop_all = settings.shop_all_collection | default: collections.all -%}
+<div class="container main-404">
+  <div class="empty-state">
+    <p class="label">{{ 'not_found.eyebrow' | t }}</p>
+    <h1>{{ 'not_found.title' | t }}</h1>
+    <p class="text-muted">{{ 'not_found.text' | t }}</p>
+    <a class="button" href="{{ shop_all.url }}">
+      {{- shop_all.title | escape -}}
+      <span class="arrow" aria-hidden="true">&rarr;</span>
+    </a>
+  </div>
+</div>
+
+{% stylesheet %}
+  .main-404 {
+    display: grid;
+    align-items: center;
+    min-height: 60vh;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.not_found.name",
+  "settings": []
+}
+{% endschema %}

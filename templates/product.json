@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "eyebrow": "",
+        "show_dynamic_checkout": true,
+        "purchase_note": "Shipping and any applicable taxes are calculated at checkout."
+      }
+    },
+    "recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "heading": "You may also like",
+        "intent": "related",
+        "limit": 4
+      }
+    }
+  },
+  "order": ["main", "recommendations"]
+}

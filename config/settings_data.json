@@ -1,0 +1,10 @@
+{
+  "current": {
+    "enable_ajax_cart": true,
+    "show_account": false,
+    "show_currency": true,
+    "show_second_image": true,
+    "show_product_origin": true,
+    "shop_all_collection": "all-provisions"
+  }
+}

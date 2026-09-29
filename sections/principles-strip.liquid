@@ -1,0 +1,96 @@
+<div class="principles">
+  <ol class="principles__list container list-reset">
+    {%- for block in section.blocks -%}
+      <li class="principles__item text-small" {{ block.shopify_attributes }}>
+        <span class="principles__number serif text-muted" aria-hidden="true">
+          {{- forloop.index | prepend: '0' -}}
+        </span>
+        {{- block.settings.text | escape -}}
+      </li>
+    {%- endfor -%}
+  </ol>
+</div>
+
+{% stylesheet %}
+  .principles {
+    border-block: var(--border-width) solid var(--color-rule);
+  }
+
+  .principles__list {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+  }
+
+  .principles__item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-4);
+    padding: var(--space-5) var(--space-3);
+    text-align: center;
+  }
+
+  .principles__item + .principles__item {
+    border-left: var(--border-width) solid var(--color-rule);
+  }
+
+  .principles__number {
+    font-size: var(--text-body);
+    font-style: italic;
+  }
+
+  @media (max-width: 480px) {
+    .principles__item {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.principles.name",
+  "max_blocks": 3,
+  "blocks": [
+    {
+      "type": "principle",
+      "name": "t:sections.principles.principle",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:labels.text",
+          "default": "t:defaults.principles.ingredient"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.principles.name",
+      "blocks": [
+        {
+          "type": "principle",
+          "settings": {
+            "text": "t:defaults.principles.animal"
+          }
+        },
+        {
+          "type": "principle",
+          "settings": {
+            "text": "t:defaults.principles.ingredient"
+          }
+        },
+        {
+          "type": "principle",
+          "settings": {
+            "text": "t:defaults.principles.origin"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

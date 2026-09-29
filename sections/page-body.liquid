@@ -1,0 +1,12 @@
+{%- if page.content != blank -%}
+  <div class="container section">
+    <div class="rte measure">{{ page.content }}</div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.page_body.name",
+  "settings": []
+}
+{% endschema %}

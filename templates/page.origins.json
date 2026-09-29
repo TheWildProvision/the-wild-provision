@@ -1,0 +1,42 @@
+{
+  "sections": {
+    "intro": {
+      "type": "page-intro",
+      "settings": {
+        "eyebrow": "Origins",
+        "heading": "Every provision begins somewhere.",
+        "text": "<p>Ingredient, provenance and process. Three details worth knowing.</p>"
+      }
+    },
+    "origins": {
+      "type": "origins",
+      "blocks": {
+        "land": {
+          "type": "origin",
+          "settings": {
+            "collection": "from-the-land",
+            "image": "shopify://shop_images/5ed88f7e17354bcfabc19f0a39cab17a.jpg"
+          }
+        },
+        "sea": {
+          "type": "origin",
+          "settings": {
+            "collection": "from-the-sea",
+            "image": "shopify://shop_images/156655dc7a8e3d9c66e83441ddf31080.jpg"
+          }
+        }
+      },
+      "block_order": ["land", "sea"],
+      "settings": {
+        "eyebrow": "",
+        "heading": "From land and sea.",
+        "text": ""
+      }
+    },
+    "page": {
+      "type": "page-body",
+      "settings": {}
+    }
+  },
+  "order": ["intro", "origins", "page"]
+}

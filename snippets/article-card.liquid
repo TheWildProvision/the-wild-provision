@@ -1,0 +1,74 @@
+{% doc %}
+  Renders a blog article card as a list item with one stretched link. Place it
+  inside a <ul class="journal-grid">.
+
+  @param {article} article - The article to show
+  @param {number} [heading_level] - Heading level for the title (default 3)
+
+  @example
+  <ul class="journal-grid list-reset">
+    {% render 'article-card', article: article, heading_level: 2 %}
+  </ul>
+{% enddoc %}
+
+{%- assign level = heading_level | default: 3 -%}
+<li class="article-card card">
+  <div class="article-card__media media">
+    {% render 'responsive-image', image: article.image, decorative: true, sizes: '(max-width: 480px) 100vw, (max-width: 800px) 50vw, 33vw' %}
+  </div>
+  <p class="article-card__date label text-muted">{{ article.published_at | date: '%d %B %Y' }}</p>
+  <h{{ level }} class="article-card__title text-heading">
+    <a class="card__link" href="{{ article.url }}">{{ article.title | escape }}</a>
+  </h{{ level }}>
+  <p class="article-card__excerpt text-small text-muted">
+    {{- article.excerpt_or_content | strip_html | truncatewords: 24 -}}
+  </p>
+  <span class="article-card__more arrow-link" aria-hidden="true">
+    {{- 'blogs.article.read_more' | t -}}
+    <span class="arrow">&rarr;</span>
+  </span>
+</li>
+
+{% stylesheet %}
+  .journal-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-7) var(--space-5);
+  }
+
+  .article-card {
+    container-type: inline-size;
+  }
+
+  .article-card__media {
+    aspect-ratio: var(--ratio-landscape);
+  }
+
+  .article-card__date {
+    margin-top: var(--space-5);
+  }
+
+  .article-card__title {
+    margin-top: var(--space-3);
+  }
+
+  .article-card__excerpt {
+    margin-top: var(--space-3);
+  }
+
+  .article-card__more {
+    margin-top: var(--space-4);
+  }
+
+  @media (max-width: 800px) {
+    .journal-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 480px) {
+    .journal-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstylesheet %}

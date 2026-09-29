@@ -1,0 +1,248 @@
+{
+  "settings": {
+    "shopping": {
+      "name": "Shopping",
+      "brand_info": "Your logo, slogan, short description, favicon and social links come from Shopify admin > Settings > Brand. Colours and type are fixed by the design system.",
+      "enable_ajax_cart": "Add to bag without leaving the product page",
+      "show_account": "Show customer account link",
+      "show_currency": "Show currency code in prices",
+      "shop_all_collection": "Shop-all collection",
+      "shop_all_collection_info": "Used by every \"shop all\" link: the hero default, empty bag, 404, empty collections and breadcrumbs. Leave empty to use Shopify's built-in /collections/all."
+    },
+    "product_cards": {
+      "name": "Product cards",
+      "show_second_image": "Show a second product image on hover",
+      "show_product_origin": "Show the Origin metafield"
+    }
+  },
+  "labels": {
+    "blog": "Blog",
+    "button_label": "Button label",
+    "collection": "Collection",
+    "eyebrow": "Eyebrow",
+    "heading": "Heading",
+    "image": "Image",
+    "lead": "Introduction",
+    "link": "Link",
+    "link_label": "Link label",
+    "menu": "Menu",
+    "text": "Text"
+  },
+  "info": {
+    "eyebrow": "A short label above the heading. Four words at most.",
+    "image_alt": "Alt text comes from the image. Edit it in Content > Files."
+  },
+  "defaults": {
+    "announcement": {
+      "text": "Single-ingredient provisions. Nothing unnecessary."
+    },
+    "blog": {
+      "eyebrow": "Stories and origins"
+    },
+    "contact": {
+      "eyebrow": "Correspondence",
+      "heading": "A conversation, naturally.",
+      "text": "<p>Questions about a provision, an order, or the way we do things? We would be glad to hear from you.</p>"
+    },
+    "faq": {
+      "answer": "<p>One animal ingredient, clearly named. Each product page lists its ingredient, origin and processing.</p>",
+      "question": "What does single-ingredient mean?"
+    },
+    "featured_collection": {
+      "eyebrow": "The collection",
+      "heading": "Nothing extra. Nothing ordinary."
+    },
+    "hero": {
+      "button_label": "Explore all provisions",
+      "heading": "In their <em>own form.</em>"
+    },
+    "image_with_text": {
+      "heading": "Less intervention. <em>More of the original.</em>"
+    },
+    "journal": {
+      "eyebrow": "The journal",
+      "heading": "Notes from the field."
+    },
+    "list_collections": {
+      "eyebrow": "The collection",
+      "heading": "A considered collection."
+    },
+    "manifesto": {
+      "eyebrow": "Our point of view",
+      "heading": "A shorter ingredient list. A clearer connection to the <em>natural world.</em>"
+    },
+    "newsletter": {
+      "heading": "A note, now and then.",
+      "text": "<p>New provisions, stories of origin, and things worth sharing. A considered correspondence.</p>"
+    },
+    "origins": {
+      "eyebrow": "Origins",
+      "heading": "A sense of place."
+    },
+    "password": {
+      "eyebrow": "Taking shape, naturally.",
+      "heading": "Something <em>worth waiting for.</em>",
+      "text": "<p>A considered collection of single-ingredient provisions. Leave your email to hear when we open.</p>"
+    },
+    "principles": {
+      "animal": "One animal.",
+      "ingredient": "One ingredient.",
+      "origin": "One origin."
+    },
+    "product": {
+      "accordion_heading": "More information",
+      "purchase_note": "Shipping and any applicable taxes are calculated at checkout."
+    },
+    "recommendations": {
+      "heading": "You may also like"
+    },
+    "rich_text": {
+      "heading": "Worth keeping."
+    }
+  },
+  "sections": {
+    "announcement": {
+      "name": "Announcement"
+    },
+    "apps": {
+      "name": "Apps"
+    },
+    "article": {
+      "name": "Article",
+      "show_author": "Show author"
+    },
+    "blog": {
+      "name": "Journal"
+    },
+    "cart": {
+      "name": "Bag",
+      "show_note": "Allow order notes"
+    },
+    "collection": {
+      "name": "Collection",
+      "menu": "Collection navigation",
+      "menu_info": "Links shown above the products, e.g. All provisions, From the land, From the sea. Without a menu, the product count shows instead.",
+      "products_per_page": "Products per page",
+      "show_description": "Show collection description"
+    },
+    "contact": {
+      "name": "Contact",
+      "show_email": "Show the store email address",
+      "show_email_info": "Uses the sender email from Shopify admin > Settings > Notifications.",
+      "text_info": "Shown when the page itself has no content."
+    },
+    "custom_liquid": {
+      "name": "Custom Liquid",
+      "liquid": "Liquid",
+      "spacing": "Add vertical spacing"
+    },
+    "faq": {
+      "name": "Questions and answers",
+      "answer": "Answer",
+      "heading_info": "Leave empty when the page introduction already titles the questions.",
+      "question": "Question"
+    },
+    "featured_collection": {
+      "name": "Selected provisions",
+      "collection_info": "The link beside the heading uses this collection's title.",
+      "limit": "Number of products"
+    },
+    "footer": {
+      "name": "Footer",
+      "brand_info": "The wordmark, description, slogan and social links come from Shopify admin > Settings > Brand. Each column heading is the menu's title.",
+      "menu": "First menu (e.g. Explore)",
+      "show_localization": "Show country and language selectors",
+      "support_menu": "Second menu (e.g. Good to know)",
+      "support_menu_info": "Social links from Settings > Brand are listed under this menu."
+    },
+    "footer_group": {
+      "name": "Footer"
+    },
+    "header": {
+      "name": "Header"
+    },
+    "header_group": {
+      "name": "Header"
+    },
+    "hero": {
+      "name": "Editorial hero",
+      "link_info": "Defaults to all products.",
+      "show_slogan": "Show the brand slogan"
+    },
+    "image_with_text": {
+      "name": "Image and story",
+      "dark": "Dark surface",
+      "reverse": "Image on the right",
+      "anchor": "Anchor",
+      "anchor_info": "Lets a menu link scroll here, e.g. /#our-approach"
+    },
+    "journal": {
+      "name": "Journal",
+      "limit": "Number of articles"
+    },
+    "list_collections": {
+      "name": "Collections list"
+    },
+    "manifesto": {
+      "name": "Brand statement",
+      "statement": "Statement"
+    },
+    "newsletter": {
+      "name": "Newsletter"
+    },
+    "not_found": {
+      "name": "Page not found"
+    },
+    "origins": {
+      "name": "Origins",
+      "collection_info": "The card uses the collection's title, description and image unless you override them below.",
+      "heading_override": "Heading (optional override)",
+      "image_override": "Image (optional override)",
+      "origin": "Origin",
+      "text_override": "Description (optional override)"
+    },
+    "page": {
+      "name": "Page"
+    },
+    "page_body": {
+      "name": "Page content"
+    },
+    "page_intro": {
+      "name": "Page introduction",
+      "heading": "Heading",
+      "heading_info": "Defaults to the page title."
+    },
+    "password": {
+      "name": "Coming soon"
+    },
+    "principles": {
+      "name": "Three essentials",
+      "principle": "Essential"
+    },
+    "product": {
+      "name": "Product",
+      "accordion": "Additional detail",
+      "delivery_page": "Delivery and returns page",
+      "delivery_page_info": "Defaults to your shipping policy.",
+      "eyebrow": "Eyebrow",
+      "eyebrow_info": "Shown when a product has no product type.",
+      "purchase_note": "Purchase note",
+      "show_dynamic_checkout": "Show express checkout buttons",
+      "show_dynamic_checkout_info": "Shop Pay, Apple Pay and other enabled wallets."
+    },
+    "recommendations": {
+      "name": "Product recommendations",
+      "complementary": "Pairs well with",
+      "intent": "Recommendation type",
+      "intent_info": "Complementary products are set up in the Search & Discovery app. Sold-out products are never recommended.",
+      "limit": "Number of products",
+      "related": "Related products"
+    },
+    "rich_text": {
+      "name": "Editorial text"
+    },
+    "search": {
+      "name": "Search"
+    }
+  }
+}

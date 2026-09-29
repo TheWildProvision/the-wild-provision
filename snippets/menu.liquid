@@ -1,0 +1,54 @@
+{% doc %}
+  Renders a Shopify menu as nested lists, up to three levels. The link for the
+  current page gets aria-current="page", and a top-level item gets .is-active
+  when it or one of its children is the current page.
+
+  @param {linklist} menu - The menu to render
+  @param {string} block - BEM block class for the markup, e.g. 'site-nav'
+  @param {boolean} [nested] - Render child links as disclosures (default: top level only)
+
+  @example
+  {% render 'menu', menu: section.settings.menu, block: 'site-nav', nested: true %}
+{% enddoc %}
+
+<ul class="{{ block }}__list list-reset">
+  {%- for link in menu.links -%}
+    <li class="{{ block }}__item{% if link.current or link.child_active %} is-active{% endif %}">
+      {%- if nested and link.links != blank -%}
+        <details class="{{ block }}__details">
+          <summary class="{{ block }}__link">{{ link.title | escape }}</summary>
+          <ul class="{{ block }}__sublist list-reset">
+            <li>
+              <a class="{{ block }}__sublink" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>
+                {{- link.title | escape -}}
+              </a>
+            </li>
+            {%- for child in link.links -%}
+              <li>
+                <a class="{{ block }}__sublink" href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>
+                  {{- child.title | escape -}}
+                </a>
+                {%- if child.links != blank -%}
+                  <ul class="{{ block }}__sublist list-reset">
+                    {%- for grandchild in child.links -%}
+                      <li>
+                        <a class="{{ block }}__sublink" href="{{ grandchild.url }}"{% if grandchild.current %} aria-current="page"{% endif %}>
+                          {{- grandchild.title | escape -}}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </details>
+      {%- else -%}
+        <a class="{{ block }}__link" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>
+          {{- link.title | escape -}}
+          {{- link.data_sharing_opt_out_icon -}}
+        </a>
+      {%- endif -%}
+    </li>
+  {%- endfor -%}
+</ul>

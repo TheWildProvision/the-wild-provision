@@ -1,0 +1,76 @@
+{%- assign featured = section.settings.collection -%}
+<section class="container section" aria-labelledby="Featured-{{ section.id }}">
+  <div class="section-heading">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="label">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h2 id="Featured-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.text != blank -%}
+        <div class="section-heading__lead rte">{{ section.settings.text }}</div>
+      {%- endif -%}
+    </div>
+    {%- if featured != blank -%}
+      <a class="arrow-link" href="{{ featured.url }}">
+        {{- featured.title | escape -}}
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    {%- endif -%}
+  </div>
+
+  {%- if featured != blank and featured.products_count > 0 -%}
+    <ul class="product-grid list-reset">
+      {%- for product in featured.products limit: section.settings.limit -%}
+        {% render 'product-card', product: product, collection: featured %}
+      {%- endfor -%}
+    </ul>
+  {%- elsif request.design_mode -%}
+    <p class="editor-note">{{ 'sections.featured_collection.empty' | t }}</p>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.featured_collection.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow",
+      "info": "t:info.eyebrow",
+      "default": "t:defaults.featured_collection.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "t:defaults.featured_collection.heading"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:labels.lead"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:labels.collection",
+      "info": "t:sections.featured_collection.collection_info"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "t:sections.featured_collection.limit",
+      "default": 4,
+      "min": 4,
+      "max": 12,
+      "step": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.featured_collection.name"
+    }
+  ]
+}
+{% endschema %}

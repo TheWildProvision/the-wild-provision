@@ -1,0 +1,62 @@
+{
+  "sections": {
+    "intro": {
+      "type": "page-intro",
+      "settings": {
+        "eyebrow": "Good to know",
+        "heading": "A few considered answers."
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": ""
+      },
+      "blocks": {
+        "ingredient": {
+          "type": "question",
+          "settings": {
+            "question": "What does single-ingredient mean?",
+            "answer": "<p>One animal ingredient, clearly named. Each product page lists its ingredient, origin and processing.</p>"
+          }
+        },
+        "process": {
+          "type": "question",
+          "settings": {
+            "question": "How are the provisions processed?",
+            "answer": "<p>Processing varies by product, and each product page describes its preparation method. Minimal processing does not mean untreated.</p>"
+          }
+        },
+        "suitability": {
+          "type": "question",
+          "settings": {
+            "question": "Which provision is right for my dog?",
+            "answer": "<p>Every dog chews differently. Each product page has a feeding guide. If you are unsure, ask your vet, or write to us and we will help you choose.</p>",
+            "link_label": "Write to us",
+            "link": "shopify://pages/contact"
+          }
+        },
+        "delivery": {
+          "type": "question",
+          "settings": {
+            "question": "Where do you deliver?",
+            "answer": "<p>Delivery areas, rates and estimated times are set out in our shipping policy.</p>",
+            "link_label": "Shipping policy",
+            "link": "/policies/shipping-policy"
+          }
+        },
+        "storage": {
+          "type": "question",
+          "settings": {
+            "question": "How should I store my provisions?",
+            "answer": "<p>Follow the storage instructions on the packaging and on each product page.</p>"
+          }
+        }
+      },
+      "block_order": ["ingredient", "process", "suitability", "delivery", "storage"]
+    }
+  },
+  "order": ["intro", "faq"]
+}

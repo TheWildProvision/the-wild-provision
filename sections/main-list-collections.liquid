@@ -1,0 +1,44 @@
+<div class="container main-list-collections">
+  <header class="page-heading">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="label">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+    <h1>{{ section.settings.heading | escape }}</h1>
+  </header>
+
+  {%- paginate collections by 12 -%}
+    <ul class="collection-grid list-reset">
+      {%- for collection in collections -%}
+        {% render 'collection-card', collection: collection, heading_level: 2 %}
+      {%- endfor -%}
+    </ul>
+    {% render 'pagination', paginate: paginate %}
+  {%- endpaginate -%}
+</div>
+
+{% stylesheet %}
+  .main-list-collections {
+    padding-bottom: var(--space-section);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.list_collections.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow",
+      "info": "t:info.eyebrow",
+      "default": "t:defaults.list_collections.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "t:defaults.list_collections.heading"
+    }
+  ]
+}
+{% endschema %}

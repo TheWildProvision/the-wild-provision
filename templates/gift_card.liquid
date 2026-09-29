@@ -1,0 +1,87 @@
+{% layout none %}
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    {% render 'theme-head' %}
+    <meta name="robots" content="noindex, nofollow">
+    <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer></script>
+    {{ content_for_header }}
+    <style>
+      .gift-card {
+        display: grid;
+        justify-items: center;
+        gap: var(--space-5);
+        max-width: 40rem;
+        margin: var(--space-8) auto;
+        padding-inline: var(--gutter);
+        text-align: center;
+        container-type: inline-size;
+      }
+
+      .gift-card__code {
+        width: 100%;
+        padding: var(--space-5);
+        border: var(--border-width) dashed var(--color-control);
+        letter-spacing: var(--tracking-label);
+        overflow-wrap: anywhere;
+      }
+
+      .gift-card__actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--space-3);
+      }
+
+      @media print {
+        .gift-card__actions {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="gift-card">
+      {% render 'brand' %}
+      <h1>{{ 'gift_card.title' | t }}</h1>
+      <p class="text-heading">{{ gift_card.initial_value | money_with_currency }}</p>
+      {%- unless gift_card.enabled -%}
+        <p class="form-message form-message--error">{{ 'gift_card.disabled' | t }}</p>
+      {%- endunless -%}
+      {%- if gift_card.expired -%}
+        <p class="form-message form-message--error">{{ 'gift_card.expired' | t }}</p>
+      {%- endif -%}
+      {%- assign balance = gift_card.balance | money_with_currency -%}
+      <p>{{ 'gift_card.balance' | t: balance: balance }}</p>
+      <p class="label">{{ 'gift_card.code' | t }}</p>
+      <p class="gift-card__code text-heading">{{ gift_card.code | format_code }}</p>
+      <div id="GiftCardQr" data-identifier="{{ gift_card.qr_identifier }}"></div>
+      {%- if gift_card.expires_on -%}
+        {%- assign expiry = gift_card.expires_on | date: format: 'long_date' -%}
+        <p class="text-small text-muted">{{ 'gift_card.expires' | t: date: expiry }}</p>
+      {%- endif -%}
+      <div class="gift-card__actions">
+        <a class="button button--solid" href="{{ shop.url }}">
+          {{- 'gift_card.shop' | t -}}
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+        </a>
+        <button class="button js-only" type="button" onclick="window.print()">{{ 'gift_card.print' | t }}</button>
+      </div>
+      {%- if gift_card.pass_url -%}
+        <a class="text-link" href="{{ gift_card.pass_url }}">{{ 'gift_card.apple_wallet' | t }}</a>
+      {%- endif -%}
+    </main>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const target = document.getElementById('GiftCardQr');
+        if (!target || typeof QRCode === 'undefined') return;
+        new QRCode(target, {
+          text: target.dataset.identifier,
+          width: 120,
+          height: 120,
+          imageAltText: {{ 'gift_card.qr_alt' | t | json }},
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+{% doc %}
+  Renders a merchant image from Shopify's CDN with a responsive srcset. Alt
+  text comes from the image itself (Shopify admin > Content > Files). With no
+  image, the theme editor shows a placeholder and shoppers see nothing.
+
+  @param {image} image - The image to render
+  @param {string} sizes - The rendered width, for the sizes attribute
+  @param {boolean} [eager] - Load eagerly with high priority (above the fold)
+  @param {boolean} [decorative] - Render with empty alt text
+  @param {string} [placeholder] - Theme editor placeholder, e.g. 'lifestyle-1'
+
+  @example
+  {% render 'responsive-image', image: section.settings.image, sizes: '(max-width: 800px) 100vw, 50vw' %}
+{% enddoc %}
+
+{%- if image != blank -%}
+  {%- liquid
+    assign alt = image.alt | default: ''
+    if decorative
+      assign alt = ''
+    endif
+  -%}
+  {%- if eager -%}
+    {{ image | image_url: width: 2000 | image_tag: widths: '480, 750, 1100, 1500, 2000', sizes: sizes, loading: 'eager', fetchpriority: 'high', alt: alt }}
+  {%- else -%}
+    {{ image | image_url: width: 1800 | image_tag: widths: '480, 750, 1100, 1500, 1800', sizes: sizes, loading: 'lazy', alt: alt }}
+  {%- endif -%}
+{%- elsif request.design_mode -%}
+  {{ placeholder | default: 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+{%- endif -%}

@@ -1,0 +1,44 @@
+<div class="container main-blog">
+  <header class="page-heading">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="label">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+    <h1>{{ blog.title | escape }}</h1>
+  </header>
+
+  {%- paginate blog.articles by 9 -%}
+    {%- if blog.articles.size > 0 -%}
+      <ul class="journal-grid list-reset">
+        {%- for article in blog.articles -%}
+          {% render 'article-card', article: article, heading_level: 2 %}
+        {%- endfor -%}
+      </ul>
+      {% render 'pagination', paginate: paginate %}
+    {%- else -%}
+      <div class="empty-state">
+        <p class="text-muted">{{ 'blogs.general.empty' | t }}</p>
+      </div>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+{% stylesheet %}
+  .main-blog {
+    padding-bottom: var(--space-section);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.blog.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow",
+      "info": "t:info.eyebrow",
+      "default": "t:defaults.blog.eyebrow"
+    }
+  ]
+}
+{% endschema %}

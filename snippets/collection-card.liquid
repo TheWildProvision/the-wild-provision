@@ -1,0 +1,87 @@
+{% doc %}
+  Renders a collection as a card with one stretched link. Title, description
+  and image come from the collection unless overrides are passed. Place it
+  inside a <ul class="collection-grid">.
+
+  @param {collection} collection - The collection to link to
+  @param {string} [title] - Title override
+  @param {string} [text] - Description override
+  @param {image} [image] - Image override
+  @param {number} [heading_level] - Heading level for the title (default 3)
+  @param {string} [attributes] - Extra attributes, e.g. block.shopify_attributes
+
+  @example
+  <ul class="collection-grid list-reset">
+    {% render 'collection-card', collection: collection, heading_level: 2 %}
+  </ul>
+{% enddoc %}
+
+{%- liquid
+  assign level = heading_level | default: 3
+  assign card_title = title | default: collection.title
+  assign card_text = text | default: collection.description | strip_html | truncatewords: 20
+  assign card_image = image | default: collection.featured_image
+  assign card_url = collection.url | default: settings.shop_all_collection.url | default: routes.all_products_collection_url
+-%}
+<li class="collection-card card" {{ attributes }}>
+  <div class="collection-card__media media">
+    {% render 'responsive-image', image: card_image, sizes: '(max-width: 480px) 100vw, 50vw', placeholder: 'collection-1' %}
+  </div>
+  <div class="collection-card__content">
+    <div>
+      <h{{ level }} class="collection-card__title text-heading">
+        <a class="card__link" href="{{ card_url }}">{{ card_title | escape }}</a>
+      </h{{ level }}>
+      {%- if card_text != blank -%}
+        <p class="collection-card__text text-small text-muted">{{ card_text | escape }}</p>
+      {%- endif -%}
+    </div>
+    <span class="collection-card__cta text-small" aria-hidden="true">
+      {{- 'sections.origins.explore' | t }} <span class="arrow">&rarr;</span>
+    </span>
+  </div>
+</li>
+
+{% stylesheet %}
+  .collection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    gap: var(--space-7) var(--space-5);
+  }
+
+  .collection-card {
+    container-type: inline-size;
+  }
+
+  .collection-card__media {
+    aspect-ratio: var(--ratio-landscape);
+  }
+
+  .collection-card__media img {
+    transition: transform var(--duration-slow) var(--ease);
+  }
+
+  .collection-card:hover .collection-card__media img {
+    transform: scale(1.025);
+  }
+
+  .collection-card__content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-4) var(--space-6);
+    padding-block: var(--space-5);
+    border-bottom: var(--border-width) solid var(--color-rule);
+  }
+
+  .collection-card__text {
+    max-width: var(--measure-narrow);
+    margin-top: var(--space-2);
+  }
+
+  .collection-card__cta {
+    padding-top: var(--space-2);
+    white-space: nowrap;
+  }
+{% endstylesheet %}

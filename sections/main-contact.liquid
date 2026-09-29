@@ -1,0 +1,161 @@
+{%- assign contact_id = 'ContactForm-' | append: section.id -%}
+<div class="container main-contact">
+  <header class="page-heading">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="label">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+    <h1>{{ page.title | escape }}</h1>
+  </header>
+
+  <div class="main-contact__grid">
+    <div class="main-contact__intro">
+      {%- if section.settings.heading != blank -%}
+        <h2>{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- assign intro = page.content | default: section.settings.text -%}
+      {%- if intro != blank -%}
+        <div class="rte text-muted">{{ intro }}</div>
+      {%- endif -%}
+      {%- if section.settings.show_email and shop.email != blank -%}
+        <p><a class="text-link" href="mailto:{{ shop.email }}">{{ shop.email }}</a></p>
+      {%- endif -%}
+    </div>
+
+    {%- form 'contact', id: contact_id, class: 'form-grid' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="form-message" role="status" tabindex="-1" autofocus>{{ 'contact.form.success' | t }}</p>
+      {%- endif -%}
+      {%- if form.errors -%}
+        <div id="ContactErrors-{{ section.id }}" class="form-message form-message--error" role="alert" tabindex="-1" autofocus>
+          {{ form.errors | default_errors }}
+        </div>
+      {%- endif -%}
+      <div class="field-row">
+        <div class="form-field">
+          <label for="ContactName-{{ section.id }}">{{ 'general.forms.name' | t }}</label>
+          <input
+            class="field"
+            id="ContactName-{{ section.id }}"
+            type="text"
+            name="contact[name]"
+            value="{{ form.name | default: customer.name | escape }}"
+            autocomplete="name"
+            required
+          >
+        </div>
+        <div class="form-field">
+          <label for="ContactEmail-{{ section.id }}">{{ 'general.forms.email' | t }}</label>
+          <input
+            class="field"
+            id="ContactEmail-{{ section.id }}"
+            type="email"
+            name="contact[email]"
+            value="{{ form.email | default: customer.email | escape }}"
+            autocomplete="email"
+            autocapitalize="off"
+            spellcheck="false"
+            required
+            {% if form.errors contains 'email' %}
+              aria-invalid="true" aria-describedby="ContactErrors-{{ section.id }}"
+            {% endif %}
+          >
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="ContactPhone-{{ section.id }}">{{ 'general.forms.phone' | t }}</label>
+        <input
+          class="field"
+          id="ContactPhone-{{ section.id }}"
+          type="tel"
+          name="contact[phone]"
+          value="{{ form.phone | escape }}"
+          autocomplete="tel"
+        >
+      </div>
+      <div class="form-field">
+        <label for="ContactBody-{{ section.id }}">{{ 'general.forms.message' | t }}</label>
+        <textarea
+          class="field"
+          id="ContactBody-{{ section.id }}"
+          name="contact[body]"
+          rows="7"
+          required
+          {% if form.errors contains 'body' %}
+            aria-invalid="true" aria-describedby="ContactErrors-{{ section.id }}"
+          {% endif %}
+        >{{ form.body | escape }}</textarea>
+      </div>
+      <div>
+        <button class="button button--solid" type="submit">
+          {{- 'contact.form.send' | t -}}
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+        </button>
+      </div>
+    {%- endform -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .main-contact {
+    padding-bottom: var(--space-section);
+  }
+
+  .main-contact__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: var(--space-8);
+  }
+
+  .main-contact__intro {
+    display: grid;
+    align-content: start;
+    gap: var(--space-5);
+    container-type: inline-size;
+  }
+
+  .main-contact__intro .rte {
+    max-width: var(--measure-narrow);
+  }
+
+  @media (max-width: 800px) {
+    .main-contact__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.contact.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow",
+      "info": "t:info.eyebrow",
+      "default": "t:defaults.contact.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "t:defaults.contact.heading"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:labels.text",
+      "info": "t:sections.contact.text_info",
+      "default": "t:defaults.contact.text"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_email",
+      "label": "t:sections.contact.show_email",
+      "info": "t:sections.contact.show_email_info",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

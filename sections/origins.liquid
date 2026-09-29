@@ -1,0 +1,95 @@
+<section class="container section" aria-labelledby="Origins-{{ section.id }}">
+  <div class="section-heading">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="label">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h2 id="Origins-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.text != blank -%}
+        <p class="section-heading__lead">{{ section.settings.text | escape }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <ul class="collection-grid list-reset">
+    {%- for block in section.blocks -%}
+      {% render 'collection-card',
+        collection: block.settings.collection,
+        title: block.settings.heading,
+        text: block.settings.text,
+        image: block.settings.image,
+        attributes: block.shopify_attributes
+      %}
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.origins.name",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow",
+      "info": "t:info.eyebrow",
+      "default": "t:defaults.origins.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "t:defaults.origins.heading"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "t:labels.lead"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "origin",
+      "name": "t:sections.origins.origin",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "t:labels.collection",
+          "info": "t:sections.origins.collection_info"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.origins.heading_override"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:sections.origins.text_override"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.origins.image_override",
+          "info": "t:info.image_alt"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.origins.name",
+      "blocks": [
+        {
+          "type": "origin"
+        },
+        {
+          "type": "origin"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

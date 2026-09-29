@@ -1,0 +1,100 @@
+{% doc %}
+  Renders the newsletter sign-up: a Shopify customer form tagged
+  "newsletter". The label is visible, and errors and the success message are
+  tied to the field and receive focus after the page reloads.
+
+  @param {string} id - A unique suffix, usually section.id
+
+  @example
+  {% render 'newsletter-form', id: section.id %}
+{% enddoc %}
+
+{%- assign form_id = 'Newsletter-' | append: id -%}
+{% form 'customer', id: form_id, class: 'newsletter-form' %}
+  <input type="hidden" name="contact[tags]" value="newsletter">
+  <input type="hidden" name="contact[accepts_marketing]" value="true">
+  <label class="label" for="NewsletterEmail-{{ id }}">{{ 'newsletter.label' | t }}</label>
+  <div class="newsletter-form__row">
+    <input
+      class="newsletter-form__input"
+      id="NewsletterEmail-{{ id }}"
+      type="email"
+      name="contact[email]"
+      value="{{ form.email | escape }}"
+      autocomplete="email"
+      autocapitalize="off"
+      spellcheck="false"
+      required
+      aria-describedby="NewsletterStatus-{{ id }} NewsletterConsent-{{ id }}"
+      {% if form.errors %}
+        aria-invalid="true" autofocus
+      {% endif %}
+    >
+    <button class="newsletter-form__submit" type="submit">
+      <span class="visually-hidden">{{ 'newsletter.submit' | t }}</span>
+      <span class="arrow" aria-hidden="true">&rarr;</span>
+    </button>
+  </div>
+  <div
+    id="NewsletterStatus-{{ id }}"
+    class="form-message{% if form.errors %} form-message--error{% endif %}"
+    role="status"
+    tabindex="-1"
+    {% if form.posted_successfully? %}
+      autofocus
+    {% endif %}
+  >
+    {%- if form.posted_successfully? -%}
+      {{ 'newsletter.success' | t }}
+    {%- elsif form.errors -%}
+      {{ form.errors | default_errors }}
+    {%- endif -%}
+  </div>
+  <p id="NewsletterConsent-{{ id }}" class="text-small text-muted">
+    {{ 'newsletter.consent' | t }}
+    {%- if shop.privacy_policy != blank %}
+      <a class="text-link" href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title | escape }}</a>
+    {%- endif -%}
+  </p>
+{% endform %}
+
+{% stylesheet %}
+  .newsletter-form {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 36rem;
+  }
+
+  .newsletter-form__row {
+    display: flex;
+    gap: var(--space-3);
+    border-bottom: var(--border-width) solid var(--color-control);
+  }
+
+  .newsletter-form__row:focus-within {
+    border-bottom-color: var(--color-text);
+  }
+
+  .newsletter-form__input {
+    flex: 1;
+    min-width: 0;
+    min-height: var(--control-height);
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: var(--text-body);
+  }
+
+  .newsletter-form__input:focus-visible {
+    outline-offset: var(--space-1);
+  }
+
+  .newsletter-form__submit {
+    min-width: var(--target-min);
+    min-height: var(--target-min);
+  }
+
+  .newsletter-form .form-message:empty {
+    display: none;
+  }
+{% endstylesheet %}

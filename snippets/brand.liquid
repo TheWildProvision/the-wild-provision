@@ -1,0 +1,41 @@
+{% doc %}
+  Renders the shop wordmark linking home. Uses the logo from Shopify admin >
+  Settings > Brand when one is set, otherwise the shop name set in Georgia.
+
+  @param {string} [modifier] - Size variant class, e.g. 'brand--footer'
+  @param {boolean} [eager] - Load the logo eagerly (use in the header)
+
+  @example
+  {% render 'brand', eager: true %}
+{% enddoc %}
+
+<a class="brand {{ modifier }}" href="{{ routes.root_url }}">
+  {%- if shop.brand.logo != blank -%}
+    {%- if eager -%}
+      {{ shop.brand.logo | image_url: width: 600 | image_tag: widths: '200, 300, 400, 600', sizes: '12.5rem', class: 'brand__logo', alt: shop.name, loading: 'eager' }}
+    {%- else -%}
+      {{ shop.brand.logo | image_url: width: 600 | image_tag: widths: '200, 300, 400, 600', sizes: '12.5rem', class: 'brand__logo', alt: shop.name, loading: 'lazy' }}
+    {%- endif -%}
+  {%- else -%}
+    {{- shop.name | escape -}}
+  {%- endif -%}
+</a>
+
+{% stylesheet %}
+  .brand {
+    font-family: var(--font-serif);
+    font-size: var(--wordmark-size);
+    line-height: 1.1;
+    letter-spacing: var(--tracking-display);
+    white-space: nowrap;
+  }
+
+  .brand--footer {
+    font-size: var(--text-heading);
+  }
+
+  .brand__logo {
+    width: var(--logo-width);
+    height: auto;
+  }
+{% endstylesheet %}

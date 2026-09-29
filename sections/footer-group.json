@@ -1,0 +1,22 @@
+{
+  "name": "t:sections.footer_group.name",
+  "type": "footer",
+  "sections": {
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "A note, now and then.",
+        "text": "<p>New provisions, stories of origin, and things worth sharing. A considered correspondence.</p>"
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "menu": "footer",
+        "support_menu": "good-to-know",
+        "show_localization": true
+      }
+    }
+  },
+  "order": ["newsletter", "footer"]
+}

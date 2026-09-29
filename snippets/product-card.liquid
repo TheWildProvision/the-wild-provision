@@ -1,0 +1,133 @@
+{% doc %}
+  Renders a product card as a list item with a single stretched link. Place it
+  inside a <ul class="product-grid">.
+
+  @param {product} product - The product to show
+  @param {number} [heading_level] - Heading level for the title (default 3)
+  @param {collection} [collection] - Collection context, kept in the product URL for the breadcrumb
+
+  @example
+  <ul class="product-grid list-reset">
+    {% render 'product-card', product: product, collection: collection, heading_level: 2 %}
+  </ul>
+{% enddoc %}
+
+{%- liquid
+  assign level = heading_level | default: 3
+  assign url = product.url
+  if collection
+    assign url = product.url | within: collection
+  endif
+  assign card_variant = product.selected_or_first_available_variant
+  assign ingredient = product.metafields.custom.ingredient.value
+-%}
+<li class="product-card card">
+  <div class="product-card__media media">
+    {%- if product.featured_image != blank -%}
+      {{ product.featured_image | image_url: width: 900 | image_tag: widths: '240, 360, 540, 720, 900', sizes: '(max-width: 800px) 50vw, 25vw', loading: 'lazy', alt: '' }}
+      {%- if settings.show_second_image and product.images.size > 1 -%}
+        {{ product.images[1] | image_url: width: 900 | image_tag: widths: '240, 360, 540, 720, 900', sizes: '(max-width: 800px) 50vw, 25vw', loading: 'lazy', alt: '', class: 'product-card__second' }}
+      {%- endif -%}
+    {%- elsif request.design_mode -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+    {%- unless product.available -%}
+      <span class="product-card__badge badge label">{{ 'products.product.sold_out' | t }}</span>
+    {%- endunless -%}
+  </div>
+  <div class="product-card__info">
+    <div class="product-card__top">
+      <h{{ level }} class="product-card__title">
+        <a class="card__link" href="{{ url }}">{{ product.title | escape }}</a>
+      </h{{ level }}>
+      <p class="product-card__price text-small">
+        {% render 'price', amount: product.price, compare_at: product.compare_at_price, from: product.price_varies %}
+      </p>
+    </div>
+    {%- if settings.show_product_origin and product.metafields.custom.origin != blank -%}
+      <p class="product-card__meta text-small text-muted">{{ product.metafields.custom.origin.value | escape }}</p>
+    {%- endif -%}
+    {%- if ingredient != blank or card_variant.weight > 0 -%}
+      <p class="product-card__footer label">
+        <span>{{ ingredient | escape }}</span>
+        {%- if card_variant.weight > 0 -%}
+          <span>{{ card_variant.weight_in_unit | weight_with_unit: card_variant.weight_unit }}</span>
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+  </div>
+</li>
+
+{% stylesheet %}
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-6) var(--space-5);
+  }
+
+  .product-card__media {
+    aspect-ratio: var(--ratio-portrait);
+  }
+
+  .product-card__media img {
+    transition: transform var(--duration-slow) var(--ease);
+  }
+
+  .product-card:hover .product-card__media img {
+    transform: scale(1.04);
+  }
+
+  .product-card__media .product-card__second {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity var(--duration-fast);
+  }
+
+  .product-card:hover .product-card__second {
+    opacity: 1;
+  }
+
+  .product-card__badge {
+    position: absolute;
+    top: var(--space-4);
+    left: var(--space-4);
+  }
+
+  .product-card__info {
+    padding-top: var(--space-4);
+  }
+
+  .product-card__top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-3);
+  }
+
+  .product-card__title {
+    font-size: var(--text-body);
+    line-height: 1.4;
+  }
+
+  .product-card__meta {
+    margin-top: var(--space-1);
+  }
+
+  .product-card__footer {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: var(--border-width) solid var(--color-rule);
+  }
+
+  @media (max-width: 800px) {
+    .product-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-6) var(--space-4);
+    }
+  }
+{% endstylesheet %}

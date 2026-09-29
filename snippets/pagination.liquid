@@ -1,0 +1,79 @@
+{% doc %}
+  Renders numbered pagination for a paginate object. Outputs nothing when
+  there is only one page.
+
+  @param {paginate} paginate - The paginate object from a {% paginate %} tag
+
+  @example
+  {% render 'pagination', paginate: paginate %}
+{% enddoc %}
+
+{%- if paginate.pages > 1 -%}
+  <nav class="pagination text-small" aria-label="{{ 'accessibility.pagination' | t }}">
+    <ul class="pagination__list list-reset">
+      {%- if paginate.previous -%}
+        <li>
+          <a href="{{ paginate.previous.url }}">
+            <span aria-hidden="true">&larr;</span>
+            <span class="visually-hidden">{{ 'general.pagination.previous' | t }}</span>
+          </a>
+        </li>
+      {%- endif -%}
+      {%- for part in paginate.parts -%}
+        <li>
+          {%- if part.is_link -%}
+            <a href="{{ part.url }}">
+              <span class="visually-hidden">{{ 'general.pagination.page' | t: page: part.title }}</span>
+              <span aria-hidden="true">{{ part.title }}</span>
+            </a>
+          {%- elsif part.title == paginate.current_page -%}
+            <span aria-current="page">
+              <span class="visually-hidden">{{ 'general.pagination.page' | t: page: part.title }}</span>
+              <span aria-hidden="true">{{ part.title }}</span>
+            </span>
+          {%- else -%}
+            <span>{{ part.title }}</span>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+      {%- if paginate.next -%}
+        <li>
+          <a href="{{ paginate.next.url }}">
+            <span aria-hidden="true">&rarr;</span>
+            <span class="visually-hidden">{{ 'general.pagination.next' | t }}</span>
+          </a>
+        </li>
+      {%- endif -%}
+    </ul>
+  </nav>
+{%- endif -%}
+
+{% stylesheet %}
+  .pagination {
+    margin-top: var(--space-7);
+  }
+
+  .pagination__list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2);
+  }
+
+  .pagination__list a,
+  .pagination__list span[aria-current],
+  .pagination__list li > span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--target-min);
+    min-height: var(--target-min);
+    border: var(--border-width) solid var(--color-control);
+  }
+
+  .pagination__list [aria-current='page'] {
+    border-color: var(--color-fill);
+    background: var(--color-fill);
+    color: var(--color-on-fill);
+  }
+{% endstylesheet %}

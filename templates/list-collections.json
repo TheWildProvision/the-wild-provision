@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-list-collections",
+      "settings": {
+        "eyebrow": "The collection",
+        "heading": "A considered collection."
+      }
+    }
+  },
+  "order": ["main"]
+}

@@ -1,0 +1,143 @@
+{%- assign shop_all = settings.shop_all_collection | default: collections.all -%}
+<div class="container main-collection">
+  <header class="page-heading">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="label">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+    <h1>{{ collection.title | escape }}</h1>
+    {%- if section.settings.show_description and collection.description != blank -%}
+      <div class="page-heading__lead rte">{{ collection.description }}</div>
+    {%- endif -%}
+  </header>
+
+  <div class="collection-toolbar text-small">
+    {%- if section.settings.menu != blank -%}
+      <nav aria-label="{{ section.settings.menu.title | escape }}">
+        {% render 'menu', menu: section.settings.menu, block: 'collection-nav' %}
+      </nav>
+    {%- else -%}
+      <p>{{ 'collections.general.product_count' | t: count: collection.products_count }}</p>
+    {%- endif -%}
+
+    {%- if collection.products_count > 1 -%}
+      <form class="collection-sort" action="{{ collection.url }}" method="get">
+        <label for="SortBy-{{ section.id }}">{{ 'collections.sort.label' | t }}</label>
+        {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+        <select class="field" id="SortBy-{{ section.id }}" name="sort_by">
+          {%- for option in collection.sort_options -%}
+            <option value="{{ option.value | escape }}"{% if option.value == current_sort %} selected{% endif %}>
+              {{- option.name | escape -}}
+            </option>
+          {%- endfor -%}
+        </select>
+        <button class="text-link" type="submit">{{ 'collections.sort.apply' | t }}</button>
+      </form>
+    {%- endif -%}
+  </div>
+
+  {%- paginate collection.products by section.settings.products_per_page -%}
+    {%- if collection.products.size > 0 -%}
+      <ul class="product-grid list-reset">
+        {%- for product in collection.products -%}
+          {% render 'product-card', product: product, collection: collection, heading_level: 2 %}
+        {%- endfor -%}
+      </ul>
+      {% render 'pagination', paginate: paginate %}
+    {%- else -%}
+      <div class="empty-state">
+        <h2>{{ 'collections.empty.title' | t }}</h2>
+        <p class="text-muted">{{ 'collections.empty.text' | t }}</p>
+        <a class="arrow-link" href="{{ shop_all.url }}">
+          {{- shop_all.title | escape -}}
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+{% stylesheet %}
+  .main-collection {
+    padding-bottom: var(--space-section);
+  }
+
+  .collection-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4) var(--space-6);
+    margin-bottom: var(--space-6);
+    padding-block: var(--space-4);
+    border-block: var(--border-width) solid var(--color-rule);
+  }
+
+  .collection-nav__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .collection-nav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target-min);
+    padding-inline: var(--space-4);
+    border: var(--border-width) solid var(--color-control);
+  }
+
+  .collection-nav__link:hover,
+  .collection-nav__link[aria-current='page'] {
+    border-color: var(--color-fill);
+    background: var(--color-fill);
+    color: var(--color-on-fill);
+  }
+
+  .collection-sort {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .collection-sort .field {
+    width: auto;
+    min-height: var(--target-min);
+    padding-block: var(--space-2);
+    font-size: var(--text-small);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.collection.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow",
+      "info": "t:info.eyebrow"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "t:sections.collection.show_description",
+      "default": true
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "t:sections.collection.menu",
+      "info": "t:sections.collection.menu_info"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "t:sections.collection.products_per_page",
+      "default": 12,
+      "min": 8,
+      "max": 32,
+      "step": 4
+    }
+  ]
+}
+{% endschema %}

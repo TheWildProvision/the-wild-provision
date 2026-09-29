@@ -1,0 +1,39 @@
+{% doc %}
+  Renders the product breadcrumb: home, the collection the shopper came from
+  (or all products), then the product itself.
+
+  @param {product} product - The current product
+  @param {collection} [collection] - The collection context from the URL, if any
+
+  @example
+  {% render 'breadcrumb', product: product, collection: collection %}
+{% enddoc %}
+
+{%- liquid
+  assign parent = collection | default: settings.shop_all_collection | default: collections.all
+-%}
+<nav class="breadcrumb text-small" aria-label="{{ 'accessibility.breadcrumb' | t }}">
+  <ol class="breadcrumb__list list-reset">
+    <li><a href="{{ routes.root_url }}">{{ 'general.navigation.home' | t }}</a></li>
+    <li><a href="{{ parent.url }}">{{ parent.title | escape }}</a></li>
+    <li><span aria-current="page">{{ product.title | escape }}</span></li>
+  </ol>
+</nav>
+
+{% stylesheet %}
+  .breadcrumb__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+  }
+
+  .breadcrumb__list li + li::before {
+    content: '/' / '';
+    margin-right: var(--space-2);
+  }
+
+  .breadcrumb a:hover {
+    color: var(--color-text);
+  }
+{% endstylesheet %}

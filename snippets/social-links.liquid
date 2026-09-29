@@ -1,0 +1,39 @@
+{% doc %}
+  Renders the social profile links saved in Shopify admin > Settings > Brand.
+  Outputs nothing when no profile is set.
+
+  @example
+  {% render 'social-links' %}
+{% enddoc %}
+
+{%- capture items -%}
+  {%- assign platforms = 'instagram,tiktok,facebook,pinterest,youtube,twitter,snapchat,tumblr,vimeo' | split: ',' -%}
+  {%- for platform in platforms -%}
+    {%- assign profile_url = shop.brand.metafields.social_links[platform].value -%}
+    {%- if profile_url != blank -%}
+      {%- case platform -%}
+        {%- when 'instagram' -%}{%- assign platform_name = 'social.instagram' | t -%}
+        {%- when 'tiktok' -%}{%- assign platform_name = 'social.tiktok' | t -%}
+        {%- when 'facebook' -%}{%- assign platform_name = 'social.facebook' | t -%}
+        {%- when 'pinterest' -%}{%- assign platform_name = 'social.pinterest' | t -%}
+        {%- when 'youtube' -%}{%- assign platform_name = 'social.youtube' | t -%}
+        {%- when 'twitter' -%}{%- assign platform_name = 'social.twitter' | t -%}
+        {%- when 'snapchat' -%}{%- assign platform_name = 'social.snapchat' | t -%}
+        {%- when 'tumblr' -%}{%- assign platform_name = 'social.tumblr' | t -%}
+        {%- when 'vimeo' -%}{%- assign platform_name = 'social.vimeo' | t -%}
+      {%- endcase -%}
+      <li>
+        <a href="{{ profile_url }}" target="_blank" rel="noopener">
+          {{- platform_name -}}
+          <span class="visually-hidden"> ({{ 'accessibility.new_window' | t }})</span>
+        </a>
+      </li>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- if items != blank -%}
+  <ul class="social-links list-reset">
+    {{- items -}}
+  </ul>
+{%- endif -%}

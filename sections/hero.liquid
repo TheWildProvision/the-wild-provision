@@ -1,0 +1,157 @@
+{%- assign shop_all = settings.shop_all_collection | default: collections.all -%}
+<section class="hero" aria-labelledby="HeroTitle-{{ section.id }}">
+  <div class="hero__copy">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="label">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+    <h1 id="HeroTitle-{{ section.id }}">{{ section.settings.heading }}</h1>
+    {%- if section.settings.text != blank -%}
+      <div class="hero__text rte text-muted">{{ section.settings.text }}</div>
+    {%- endif -%}
+    {%- if section.settings.button_label != blank -%}
+      <a class="hero__button button" href="{{ section.settings.link | default: shop_all.url }}">
+        {{- section.settings.button_label | escape -}}
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    {%- endif -%}
+    {%- if section.settings.show_slogan and shop.brand.slogan != blank -%}
+      <p class="hero__slogan text-small">{{ shop.brand.slogan | escape }}</p>
+    {%- endif -%}
+  </div>
+  <div class="hero__media media">
+    {% render 'responsive-image', image: section.settings.image, eager: true, sizes: '(max-width: 800px) 100vw, 50vw', placeholder: 'lifestyle-2' %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 40.625rem;
+    container-type: inline-size;
+  }
+
+  .hero__copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: var(--space-8) var(--gutter);
+    padding-left: max(var(--gutter), calc((100vw - var(--container-max)) / 2 + var(--gutter)));
+  }
+
+  .hero__copy .label {
+    margin-bottom: var(--space-6);
+  }
+
+  .hero__copy h1 {
+    max-width: 10ch;
+  }
+
+  .hero__copy h1 em {
+    display: block;
+  }
+
+  .hero__text {
+    max-width: var(--measure-narrow);
+    margin-top: var(--space-6);
+  }
+
+  .hero__button {
+    min-width: 15rem;
+    margin-top: var(--space-6);
+  }
+
+  .hero__slogan {
+    margin-top: var(--space-8);
+  }
+
+  .hero__media {
+    min-height: 40.625rem;
+  }
+
+  .hero__media::after {
+    content: '';
+    position: absolute;
+    inset: 65% 0 0;
+    background: linear-gradient(transparent, var(--color-scrim));
+    pointer-events: none;
+  }
+
+  @media (max-width: 800px) {
+    .hero {
+      grid-template-columns: 1fr;
+      min-height: 0;
+    }
+
+    .hero__copy {
+      padding-block: var(--space-7);
+    }
+
+    .hero__slogan {
+      margin-top: var(--space-6);
+    }
+
+    .hero__media {
+      min-height: 0;
+      aspect-ratio: var(--ratio-portrait);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.hero.name",
+  "enabled_on": {
+    "templates": ["index"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow",
+      "info": "t:info.eyebrow"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "t:defaults.hero.heading"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:labels.lead"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:labels.button_label",
+      "default": "t:defaults.hero.button_label"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "t:labels.link",
+      "info": "t:sections.hero.link_info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_slogan",
+      "label": "t:sections.hero.show_slogan",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:labels.image",
+      "info": "t:info.image_alt"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.hero.name"
+    }
+  ]
+}
+{% endschema %}
